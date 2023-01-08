@@ -1,0 +1,140 @@
+{
+    "move": {
+        "id": "ember",
+        "ginseng": 0,
+        "pp": 0,
+        "prior_successive_hits": 0
+    },
+    "attacker": {
+        "species": "charmander",
+        "is_team_member": true,
+        "is_team_leader": true,
+        "level": 5,
+        "hp": 22,
+        "max_hp": 22,
+        "atk": 3,
+        "sp_atk": 4,
+        "def": 2,
+        "sp_def": 3,
+        "stat_modifiers": {
+            "stages": {
+                "atk": 10,
+                "sp_atk": 10,
+                "def": 10,
+                "sp_def": 10,
+                "accuracy": 10,
+                "evasion": 10,
+                "speed": 1,
+                "stockpile": 0
+            },
+            "multipliers": {
+                "atk": 1.0,
+                "sp_atk": 1.0,
+                "def": 1.0,
+                "sp_def": 1.0
+            },
+            "flash_fire_boost": 0
+        },
+        "iq": 0,
+        "iq_skills": ["type-advantage master", "aggressor"],
+        "belly": 100,
+        "hidden_power_type": "normal",
+        "hidden_power_base_power": 0,
+        "held_item": {
+            "id": "nothing",
+            "sticky": false
+        },
+        "exclusive_items": {
+            "effects": ["exp boost"],
+            "stat_boosts": {
+                "atk": 0,
+                "sp_atk": 0,
+                "def": 0,
+                "sp_def": 0
+            }
+        },
+        "statuses": ["exposed"],
+        "boosted_attacks": false,
+        "practice_swinger": false,
+        "anger_point": false,
+        "n_moves_out_of_pp": 0
+    },
+    "defender": {
+        "species": "bulbasaur",
+        "is_team_member": false,
+        "is_team_leader": false,
+        "level": 5,
+        "hp": 22,
+        "max_hp": 22,
+        "atk": 3,
+        "sp_atk": 4,
+        "def": 2,
+        "sp_def": 3,
+        "stat_modifiers": {
+            "stages": {
+                "atk": 10,
+                "sp_atk": 10,
+                "def": 10,
+                "sp_def": 10,
+                "accuracy": 10,
+                "evasion": 10,
+                "speed": 1,
+                "stockpile": 0
+            },
+            "multipliers": {
+                "atk": 1.0,
+                "sp_atk": 1.0,
+                "def": 1.0,
+                "sp_def": 1.0
+            },
+            "flash_fire_boost": 0
+        },
+        "iq": 0,
+        "iq_skills": ["course checker", "status checker"],
+        "belly": 100,
+        "hidden_power_type": "normal",
+        "hidden_power_base_power": 0,
+        "held_item": {
+            "id": "nothing",
+            "sticky": false
+        },
+        "exclusive_items": {
+            "effects": ["exp from damage"],
+            "stat_boosts": {
+                "atk": 0,
+                "sp_atk": 0,
+                "def": 0,
+                "sp_def": 0
+            }
+        },
+        "statuses": ["guts/marvel scale"],
+        "boosted_attacks": false,
+        "practice_swinger": false,
+        "anger_point": false,
+        "n_moves_out_of_pp": 0
+    },
+    "dungeon": {
+        "weather": "clear",
+        "mud_sport": false,
+        "water_sport": false,
+        "gravity": false,
+        "plus": {
+            "team": false,
+            "enemy": false
+        },
+        "minus": {
+            "team": false,
+            "enemy": false
+        },
+        "iq_disabled": false,
+        "fixed_room_id": 0,
+        "other_monsters": {
+            "iq": ["cheerleader"],
+            "abilities": ["flower gift"]
+        }
+    },
+    "rng": {
+        "huge_pure_power": false,
+        "critical_hit": false
+    }
+}
