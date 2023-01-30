@@ -1,0 +1,41 @@
+.wrapper {
+    position: relative;
+    padding: 0 1px;
+}
+
+.info {
+    font-size: 0.8rem;
+    font-weight: normal;
+    display: inline-block;
+    width: max-content;
+
+    border: 1px solid black;
+    padding: 5px;
+    background: white;
+    border-radius: 9px;
+
+    visibility: hidden;
+    opacity: 0;
+    /* transition: 0.3s all; */
+
+    position: absolute;
+    bottom: 14px;
+    left: 11px;
+    z-index: 3;
+}
+
+img {
+    width: 0.9rem;
+}
+
+.icon:hover + .info, .icon:focus + .info {
+    opacity: 1;
+    visibility: visible;
+}
+.icon:hover {
+    cursor: help;
+}
+.icon:focus > img {
+    outline: 2.5px dotted #5E9ED6;
+    border-radius: 50%;
+}

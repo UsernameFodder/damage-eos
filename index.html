@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="UsernameFodder">
+        <meta name="description" content="Damage calculator for Pokémon Mystery Dungeon: Explorers of Sky">
+        <title>EoS Damage Calculator</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="scripts/loading.js"></script>
+        <script src="scripts/main.js" type="module"></script>
+    </head>
+    <body>
+        <template id="popup-info"><link rel="stylesheet" type="text/css" href="scripts/components/base/popup-info.css"><span class="wrapper"><span class="icon" tabindex="0"><img src="scripts/components/base/popup-info.png"></span><span class="info"><slot></slot></span></span></template>
+        <template id="checkbox-input"><input type="checkbox"><label><slot></slot></label><slot name="details"></slot></template>
+        <template id="checkbox-list-input"><link rel="stylesheet" type="text/css" href="scripts/components/base/checkbox-list-input.css">
+            <label class="checkbox-list-input-header"><slot></slot></label><slot name="details"></slot><span class="separator">:</span>
+            <ul class="items"></ul>
+        </template>
+        <template id="number-input"><link rel="stylesheet" type="text/css" href="scripts/components/base/number-input.css"><label><slot></slot></label><slot name="details"></slot><span class="separator">:</span><input type="number" required></template>
+        <template id="select-input"><link rel="stylesheet" type="text/css" href="scripts/components/base/select-input.css"><label><slot></slot></label><slot name="details"></slot><span class="separator">:</span><select></select></template>
+        <template id="table-output-unsupported">
+            <tr class="unsupported">
+                <th colspan="2">(unsupported<popup-info>Damage calculation results may be inaccurate</popup-info>)</th>
+            </tr>
+        </template>
+
+        <template id="move-output">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2" class="tcell-move">(Move)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Base power</th>
+                        <td class="tcell-basePower"></td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td class="tcell-type"></td>
+                    </tr>
+                    <tr>
+                        <th>Category</th>
+                        <td class="tcell-category"></td>
+                    </tr>
+                    <tr>
+                        <th>Max PP</th>
+                        <td class="tcell-pp"></td>
+                    </tr>
+                    <tr>
+                        <th>Accuracy 1<popup-info>Base accuracy for the first hit/miss roll performed for all moves</popup-info></th>
+                        <td class="tcell-accuracy1"></td>
+                    </tr>
+                    <tr>
+                        <th>Accuracy 2<popup-info>Base accuracy for the second hit/miss roll, which is only performed for (most) offensive moves</popup-info></th>
+                        <td class="tcell-accuracy2"></td>
+                    </tr>
+                    <tr>
+                        <th>Strikes<popup-info>Number of strikes. Note that this calculator reports the damage computed for a single strike of the selected move.</popup-info></th>
+                        <td class="tcell-strikes"></td>
+                    </tr>
+                    <tr>
+                        <th>Crit rate</th>
+                        <td class="tcell-critChance"></td>
+                    </tr>
+                    <tr>
+                        <th class="th-specialNotes">Special notes</th>
+                        <td class="tcell-specialNotes"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+        <template id="move-form">
+            <move-output for="move-form-id-input"></move-output>
+            <div class="move-form-inputs">
+                <div>
+                    <select-input name="id" id="move-form-id-input">Move</select-input>
+                </div>
+                <div>
+                    <number-input name="ginseng" max="99">Ginseng boost<popup-info slot="details"> Boosts the base power of a move</popup-info></number-input>
+                </div>
+                <div>
+                    <number-input name="pp" max="99" value="5">PP<popup-info slot="details"> Current PP. Only used for Trump Card.</popup-info></number-input>
+                </div>
+                <div>
+                    <number-input name="prior_successive_hits" max="9">Prior hits<popup-info slot="details"> Consecutive prior hits for Rollout, Ice Ball, or Triple Kick</popup-info></number-input>
+                </div>
+            </div>
+        </template>
+
+        <template id="calc-output">
+            <div>Damage: <strong><span class="calc-min-damage">0</span> - <span class="calc-max-damage">0</span><span class="calc-healed"></span></strong></div>
+            <div>Hit chance: <strong><span class="calc-hit-chance">0</span>%</strong></div>
+            <div>Crit chance: <strong><span class="calc-crit-chance">0</span>%</strong></div>
+            <details class="calc-result-details">
+                <summary>Result details<popup-info> These are direct outputs from the game's damage calculation function</popup-info></summary>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Message type<popup-info> The type of message reported in the dungeon log</popup-info></th>
+                            <td class="details-message"></td>
+                        </tr>
+                        <tr>
+                            <th>Type matchup<popup-info> Composite type matchup as determined by the type matchups for each of the defender's types. This is probably only used for the message.</popup-info></th>
+                            <td class="details-matchup"></td>
+                        </tr>
+                        <tr>
+                            <th>Move type<popup-info> The effective type of the move, factoring in type-modifying effects such as Normalize</popup-info></th>
+                            <td class="details-type"></td>
+                        </tr>
+                        <tr>
+                            <th>Move category<popup-info> The move category. This is just copied straight from the game's move tables, without modification.</popup-info></th>
+                            <td class="details-category"></td>
+                        </tr>
+                        <tr>
+                            <th>Critical hit</th>
+                            <td class="details-critical"></td>
+                        </tr>
+                        <tr>
+                            <th>Full type immunity<popup-info> Whether damage was negated fully due to move typing by Flash Fire, Levitate, or Magnet Rise. This only applies to negation during the damage calculation step, and doesn't include things such as Water Absorb, where damage is still calculated for healing purposes.</popup-info></th>
+                            <td class="details-immunity"></td>
+                        </tr>
+                        <tr>
+                            <th>No damage<popup-info> The game sets this at various points to indicate that no damage should be dealt, such as when the move misses or is negated by certain abilities like Water Absorb. It's checked at the very end and overrides any other damage calculation results.</popup-info></th>
+                            <td class="details-no-damage"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <details class="calc-calculation-details">
+                <summary>Calculation details<popup-info width="250"> These are intermediate terms in the damage formula that the game's damage calculation function stores in a debugging structure. Note that most of these values are represented as fixed-point numbers (i.e., non-whole numbers) during the actual calculation, but are stored on the debug structure and reported here rounded to the nearest whole number.</popup-info></summary>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Offensive stat stage</th>
+                            <td class="details-offensive-stage"></td>
+                        </tr>
+                        <tr>
+                            <th>Defensive stat stage</th>
+                            <td class="details-defensive-stage"></td>
+                        </tr>
+                        <tr>
+                            <th>Offensive stat</th>
+                            <td class="details-offensive-stat"></td>
+                        </tr>
+                        <tr>
+                            <th>Defensive stat</th>
+                            <td class="details-defensive-stat"></td>
+                        </tr>
+                        <tr>
+                            <th>Offense value<popup-info> The modified offense value used to compute the "AT" and "FLV" values (see below), prior to being clamped between 0 and 999</popup-info></th>
+                            <td class="details-offense"></td>
+                        </tr>
+                        <tr>
+                            <th>Defense value<popup-info> The modified defense value used to compute the "DEF" and "FLV" values (see below)</popup-info></th>
+                            <td class="details-defense"></td>
+                        </tr>
+                        <tr>
+                            <th>AT<popup-info> The offense value (clamped between 0 and 999) plus the modified move power value. "AT" comes from the game's debug messages.</popup-info></th>
+                            <td class="details-at"></td>
+                        </tr>
+                        <tr>
+                            <th>DEF<popup-info> The defense value, unmodified. "DEF" comes from the game's debug messages.</popup-info></th>
+                            <td class="details-def"></td>
+                        </tr>
+                        <tr>
+                            <th>FLV<popup-info> The attacker's level plus (offense - defense)/8. "FLV" comes from the game's debug messages. Perhaps it stands for "effective level"?</popup-info></th>
+                            <td class="details-flv"></td>
+                        </tr>
+                        <tr>
+                            <th>Base damage<popup-info> The base damage calculated before multipliers. Ignoring minor details around rounding, truncation, and clamping, this is:
+                                <div>(153/256)*AT - DEF/2 + 50*ln(10*FLV + 500) - 311</div>
+                                For enemy attacks, a multiplier of 64/85 is also applied.</popup-info></th>
+                            <td class="details-base"></td>
+                        </tr>
+                        <tr>
+                            <th>Static multiplier<popup-info> The multiplier applied to the base damage, not counting an additional random multiplier applied later. This is where things like STAB, type-advantage multipliers, etc. are applied.</popup-info></th>
+                            <td class="details-static-mult"></td>
+                        </tr>
+                        <tr>
+                            <th>Damage<popup-info> The damage calculated before random variance is applied</popup-info></th>
+                            <td class="details-damage"></td>
+                        </tr>
+                        <tr>
+                            <th>Random multiplier<popup-info> The "damage roll" multiplier, applied to the calculated damage to create random variation</popup-info></th>
+                            <td><span class="details-min-random-mult"></span>% - <span class="details-max-random-mult"></span>%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <details class="calc-modifier-details">
+                <summary>Modifier details<popup-info> These are flags related to different stat/damage modifiers that the game's damage calculation function stores in a debugging structure</popup-info></summary>
+                <checkbox-input name="modifiers-toggle">Show all<popup-info slot="details"> Show all flags, even if they aren't set</popup-info></checkbox-input>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Item attack modifier<popup-info> The net number of attack boosts to an attacker due to a Power Band or Munch Belt. It seems like there's a bug in the code; aura bows do not contribute to this field.</popup-info></th>
+                            <td class="details-item-atk"></td>
+                        </tr>
+                        <tr>
+                            <th>Item special attack modifier<popup-info> The net number of special attack boosts to an attacker due to a Special Band, Munch Belt, or aura bow. It seems like there's a bug in the code; physical attack boosts from aura bows also contribute to this field.</popup-info></th>
+                            <td class="details-item-spatk"></td>
+                        </tr>
+                        <tr>
+                            <th>Item defense modifier<popup-info> The net number of defense boosts to a defender due to a Def Scarf or aura bow. It seems like there's a bug in the code; special defense boosts from aura bows also contribute to this field.</popup-info></th>
+                            <td class="details-item-def"></td>
+                        </tr>
+                        <tr>
+                            <th>Item special defense modifier<popup-info> The net number of special defense boosts to a defender due to a Zinc Band. It seems like there's a bug in the code; aura bows do not contribute to this field.</popup-info></th>
+                            <td class="details-item-spdef"></td>
+                        </tr>
+                        <tr>
+                            <th>Ability offense modifier<popup-info> The net number of offense boosts to an attacker due to Download, Rivalry, Flower Gift, and Solar Power</popup-info></th>
+                            <td class="details-ability-offense"></td>
+                        </tr>
+                        <tr>
+                            <th>Ability defense modifier<popup-info> The net number of defense boosts to a defender due to Flower Gift</popup-info></th>
+                            <td class="details-ability-defense"></td>
+                        </tr>
+                        <tr>
+                            <th>IQ skill offense modifier<popup-info> The net number of offense boosts to an attacker due to Aggressor, Defender, and Practice Swinger</popup-info></th>
+                            <td class="details-iq-offense"></td>
+                        </tr>
+                        <tr>
+                            <th>IQ skill defense modifier<popup-info> The net number of defense boosts to a defender due to Counter Basher, Aggressor, and Defender</popup-info></th>
+                            <td class="details-iq-defense"></td>
+                        </tr>
+                        <tr>
+                            <th>Scope Lens/Sharpshooter<popup-info> Whether or not Scope Lens or Sharpshooter boosted the critical hit rate of a move</popup-info></th>
+                            <td class="details-scope-lens-sharpshooter"></td>
+                        </tr>
+                        <tr>
+                            <th>Patsy Band<popup-info> Whether or not the Patsy Band boosted the critical hit rate of a move</popup-info></th>
+                            <td class="details-patsy-band"></td>
+                        </tr>
+                        <tr>
+                            <th>Half physical damage<popup-info> Whether or not Reflect or the Time Shield halved the damage from a physical move</popup-info></th>
+                            <td class="details-half-physical"></td>
+                        </tr>
+                        <tr>
+                            <th>Half special damage<popup-info> Whether or not Light Screen or the Aqua Mantle halved the damage from a special move</popup-info></th>
+                            <td class="details-half-special"></td>
+                        </tr>
+                        <tr>
+                            <th>Focus Energy<popup-info> Whether or not the Enhanced critical-hit rate status maxed out the critical hit rate of a move</popup-info></th>
+                            <td class="details-focus-energy"></td>
+                        </tr>
+                        <tr>
+                            <th>Type-Advantage Master<popup-info> Whether or not Type-Advantage Master boosted the critical hit rate of a move</popup-info></th>
+                            <td class="details-type-advantage-master"></td>
+                        </tr>
+                        <tr>
+                            <th>Cloudy<popup-info> Whether or not a non-Normal-type move was dampened by Cloudy weather</popup-info></th>
+                            <td class="details-cloudy"></td>
+                        </tr>
+                        <tr>
+                            <th>Rain<popup-info> Whether or not a Fire or Water move was affected by Rainy weather</popup-info></th>
+                            <td class="details-rain"></td>
+                        </tr>
+                        <tr>
+                            <th>Sunny<popup-info> Whether or not a Fire or Water move was affected by Sunny weather</popup-info></th>
+                            <td class="details-sunny"></td>
+                        </tr>
+                        <tr>
+                            <th>Thick Fat/Heatproof<popup-info> Whether or a Fire move was dampened by Thick Fat or Heatproof</popup-info></th>
+                            <td class="details-thick-fat-heatproof"></td>
+                        </tr>
+                        <tr>
+                            <th>Flash Fire<popup-info> Whether or not Flash Fire was activated at some point for Fire immunity</popup-info></th>
+                            <td class="details-flash-fire"></td>
+                        </tr>
+                        <tr>
+                            <th>Levitate<popup-info> Whether or not Levitate was activated at some point for Ground immunity</popup-info></th>
+                            <td class="details-levitate"></td>
+                        </tr>
+                        <tr>
+                            <th>Overgrow<popup-info> Whether or not a Grass move was boosted by Overgrow</popup-info></th>
+                            <td class="details-overgrow"></td>
+                        </tr>
+                        <tr>
+                            <th>Swarm<popup-info> Whether or not a Bug move was boosted by Swarm</popup-info></th>
+                            <td class="details-swarm"></td>
+                        </tr>
+                        <tr>
+                            <th>Blaze/Dry Skin<popup-info> Whether or not a Fire move was boosted by either Blaze or Dry Skin</popup-info></th>
+                            <td class="details-blaze-dry-skin"></td>
+                        </tr>
+                        <tr>
+                            <th>Scrappy<popup-info> Whether or not Scrappy was activated at some point to bypass immunity</popup-info></th>
+                            <td class="details-scrappy"></td>
+                        </tr>
+                        <tr>
+                            <th>Super Luck<popup-info> Whether or not Super Luck boosted the critical hit rate for a move</popup-info></th>
+                            <td class="details-super-luck"></td>
+                        </tr>
+                        <tr>
+                            <th>Sniper<popup-info> Whether or not Sniper boosted the critical hit damage multiplier for a move</popup-info></th>
+                            <td class="details-sniper"></td>
+                        </tr>
+                        <tr>
+                            <th>STAB<popup-info> Whether or not STAB was activated for a move</popup-info></th>
+                            <td class="details-stab"></td>
+                        </tr>
+                        <tr>
+                            <th>Mud Sport/Fog<popup-info> Whether or not an Electric move was dampened by either Mud Sport or Fog</popup-info></th>
+                            <td class="details-mud-sport-fog"></td>
+                        </tr>
+                        <tr>
+                            <th>Water Sport<popup-info> Whether or not Water Sport was activated by a Fire move</popup-info></th>
+                            <td class="details-water-sport"></td>
+                        </tr>
+                        <tr>
+                            <th>Charge<popup-info> Whether or not Charge was activated by an Electric move</popup-info></th>
+                            <td class="details-charge"></td>
+                        </tr>
+                        <tr>
+                            <th>Ghost immunity<popup-info> Whether or not a Ghost type's immunity to Normal/Fighting was activated at some point</popup-info></th>
+                            <td class="details-ghost-immunity"></td>
+                        </tr>
+                        <tr>
+                            <th>Skull Bash<popup-info> Whether or not a defender took less damage due to the Charging Skull Bash status</popup-info></th>
+                            <td class="details-skull-bash"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <details class="calc-json-input">
+                <summary>Raw input<popup-info> The raw input to the damage calculator, as a JSON object</popup-info></summary>
+                <pre class="json-container"><code class="raw-json"></code></pre>
+            </details>
+            <details class="calc-json-output">
+                <summary>Raw output<popup-info> The raw output from the damage calculator, as a JSON object</popup-info></summary>
+                <pre class="json-container"><code class="raw-json"></code></pre>
+            </details>
+        </template>
+
+        <template id="species-input">
+            <div>
+                <select-input name="species">Species</select-input>
+            </div>
+            <div>
+                <checkbox-input name="secondary">Secondary gender<popup-info slot="details"> Most species have a "default" gender (usually male) and a "secondary" gender (usually female). For certain special species that only have a default gender, this toggle will be disabled.</popup-info></checkbox-input>
+            </div>
+        </template>
+        <template id="species-output">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2" class="tcell-species">(Species)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Gender</td>
+                        <td class="tcell-gender"></td>
+                    </tr>
+                    <tr>
+                        <th>Type 1</td>
+                        <td class="tcell-type1"></td>
+                    </tr>
+                    <tr>
+                        <th>Type 2</td>
+                        <td class="tcell-type2"></td>
+                    </tr>
+                    <tr>
+                        <th>Ability 1</td>
+                        <td class="tcell-ability1"></td>
+                    </tr>
+                    <tr>
+                        <th>Ability 2</td>
+                        <td class="tcell-ability2"></td>
+                    </tr>
+                    <tr>
+                        <th>Weight<popup-info width="130"> Controls damage multipliers for Low Kick and Grass Knot</popup-info></td>
+                        <td class="tcell-weight"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+        <template id="monster-form">
+            <species-input name="species" id="monster-form-species-input"></species-input>
+            <species-output for="monster-form-species-input"></species-output>
+            <div>
+                <checkbox-input name="is_team_member">Team member<popup-info slot="details" width="250"> Team members are treated differently than enemies in some ways. For example, only team members can benefit from exclusive item effects, and damage dealt by enemies is reduced by a factor of 85/64.</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="is_team_leader">Leader <popup-info slot="details"> The team leader is treated differently in cases where the belly is empty or Y-Ray Specs are equipped</popup-info></checkbox-input>
+            </div>
+            <div>
+                <number-input name="level" max="255" value="5">Level<popup-info slot="details"> A Pokémon's level directly increases damage dealt</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="hp" max="32767" value="22">HP<popup-info slot="details"> Current HP. This controls HP-dependent effects for things like Brine, Eruption, pinch abilities, etc.</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="max_hp" max="32767" value="22">Max HP<popup-info slot="details"> Current HP is compared to its maximum value when determining HP-dependent effects</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="atk" max="255" value="3" width="4">Atk</number-input>
+                <number-input name="stat_modifiers.stages.atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Charm and Memento have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="sp_atk" max="255" value="4" width="4">SpA</number-input>
+                <number-input name="stat_modifiers.stages.sp_atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Charm and Memento have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="def" max="255" value="2" width="4">Def</number-input>
+                <number-input name="stat_modifiers.stages.def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Screech have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="sp_def" max="255" value="3" width="4">SpD</number-input>
+                <number-input name="stat_modifiers.stages.sp_def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Screech have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="stat_modifiers.stages.accuracy" max="20" value="10">Accuracy stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="stat_modifiers.stages.evasion" max="20" value="10">Evasion stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="stat_modifiers.stages.speed" max="4" value="1">Speed stage<popup-info slot="details"> The speed multiplier (1x, 2x, 3x, 4x), with the exception of 0 which means half speed. A speed stage of 0 activates damage multipliers for Gyro Ball, Guts, and Marvel Scale.</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="stat_modifiers.stages.stockpile" max="3">Stockpile stage<popup-info slot="details"> Number of times Stockpile has been used (0-3)</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="stat_modifiers.flash_fire_boost" max="2">Flash Fire boost<popup-info slot="details"> Flash Fire stacks up to 2 times</popup-info></number-input>
+            </div>
+            <div>
+                <number-input name="iq" max="32767">IQ<popup-info slot="details"> Controls the power of Return/Frustration</popup-info></number-input>
+            </div>
+            <checkbox-list-input name="iq_skills">IQ skills</checkbox-list-input>
+            <div>
+                <number-input name="belly" max="100" value="100">Belly<popup-info slot="details"> A Pokémon with empty belly that isn't the leader will always deal 1 damage</popup-info></number-input>
+            </div>
+            <div>
+                <select-input name="hidden_power_type">Hidden Power type<popup-info slot="details"> Varies by Pokémon; only relevant for Hidden Power</popup-info></select-input>
+            </div>
+            <div>
+                <number-input name="hidden_power_base_power" max="32767">Hidden Power base power<popup-info slot="details"> Varies by Pokémon; only relevant for Hidden Power</popup-info></select-input>
+            </div>
+            <div>
+                <select-input name="held_item.id">Held item</select-input>
+                <checkbox-input name="held_item.sticky">Sticky<popup-info slot="details" width="100"> Sticky held items do nothing</popup-info></checkbox-input>
+            </div>
+            <div>
+                <number-input name="exclusive_items.stat_boosts.atk" max="255">Exclusive item Atk boost</number-input>
+            </div>
+            <div>
+                <number-input name="exclusive_items.stat_boosts.sp_atk" max="255">Exclusive item SpA boost</number-input>
+            </div>
+            <div>
+                <number-input name="exclusive_items.stat_boosts.def" max="255">Exclusive item Def boost</number-input>
+            </div>
+            <div>
+                <number-input name="exclusive_items.stat_boosts.sp_def" max="255">Exclusive item SpD boost</number-input>
+            </div>
+            <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Special effects from exclusive items besides ordinary stat boosts</popup-info></checkbox-list-input>
+            <checkbox-list-input name="statuses">Statuses<popup-info slot="details">Any status not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
+            <div>
+                <checkbox-input name="boosted_attacks">Boosted attacks<popup-info slot="details"> This applies a 1.5x multiplier on damage dealt by this Pokémon. It's uncertain when this flag is set...maybe for angry Kecleon shopkeepers?</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="practice_swinger">Last move missed<popup-info slot="details"> Activates the Practice Swinger IQ skill if the attacker has it</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="anger_point">Received critical hit<popup-info slot="details"> Activates the Anger Point ability if the attacker has it</popup-info></checkbox-input>
+            </div>
+            <div>
+                <number-input name="n_moves_out_of_pp" max="4"># moves out of PP<popup-info slot="details"> Controls the damage multiplier applied to Last Resort</popup-info></number-input>
+            </div>
+        </template>
+
+        <template id="rng-form">
+            <div>
+                <checkbox-input name="huge_pure_power">Huge/Pure Power<popup-info slot="details"> Only has an effect if the attacker has the Huge Power or Pure Power ability. In-game, these abilities have a 33% chance of activating with each damage calculation.</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="critical_hit">Critical hit<popup-info slot="details"> Critical hits apply a 1.5x damage multiplier, or 2x if the attacker has the Sniper ability. The chance of a critical hit depends on various factors. See the calculation results for the computed critical hit chance.</popup-info></checkbox-input>
+            </div>
+        </template>
+
+        <template id="dungeon-form">
+            <div>
+                <select-input name="weather">Weather</select-input>
+            </div>
+            <div>
+                <checkbox-input name="mud_sport">Mud Sport</checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="water_sport">Water Sport</checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="gravity">Gravity</checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="plus.team">Plus (team)<popup-info slot="details"> Whether the Plus ability is active for the team</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="plus.enemy">Plus (enemy)<popup-info slot="details"> Whether the Plus ability is active for enemies</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="minus.team">Minus (team)<popup-info slot="details"> Whether the Minus ability is active for the team</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="minus.enemy">Minus (enemy)<popup-info slot="details"> Whether the Minus ability is active for enemies</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="iq_disabled">IQ disabled<popup-info slot="details"> Dungeon condition where all IQ skill effects are disabled</popup-info></checkbox-input>
+            </div>
+            <div>
+                <checkbox-input name="substitute_room">Substitute room<popup-info slot="details"> The substitute room (fixed room ID 110) is a special fixed room layout where damage from enemies is <em>not</em> decreased by factor of 85/64 like usual</popup-info></checkbox-input>
+            </div>
+            <checkbox-list-input name="other_monsters.iq">IQ skills (other Pokémon)<popup-info slot="details"> Special IQ skills that affect other Pokémon on the floor</popup-info></checkbox-list-input>
+            <checkbox-list-input name="other_monsters.abilities">Abilities (other Pokémon)<popup-info slot="details"> Special abilities that affect other Pokémon on the floor</popup-info></checkbox-list-input>
+        </template>
+
+        <h1>PMD Explorers of Sky Damage Calculator</h1>
+        <noscript>This web application requires JavaScript to run.</noscript>
+        <div id="grid-wrapper">
+            <section id="move-section" class="cell top-row">
+                <h2>Move</h2>
+                <move-form id="move-ui" class="widget" name="move"></move-form>
+            </section>
+            <section id="info-section" class="cell top-row">
+                <h2>About</h2>
+                <p>This is an attempt to faithfully reproduce the way damage is calculated in <i>Explorers of Sky</i>.</p>
+                <p>It uses some modern web features (WebAssembly and Web Components), so if the calculator doesn't run, try updating your browser.</p>
+                <p>The source code is on <a href=https://github.com/UsernameFodder/damage-eos>GitHub</a>. If you find any bugs, feel free to open an issue or pull request. You can also message <a href=https://www.reddit.com/user/UsernameFodder>u/UsernameFodder</a> on Reddit.</p>
+            </section>
+            <section id="calc-results-section" class="cell top-row">
+                <h2>Results</h2>
+                <calc-output id="calc-results" class="widget"></calc-output>
+            </section>
+            <section id="monster1-section" class="cell bottom-row monster-box" name="attacker">
+                <h2>Attacker</h2>
+                <monster-form id="monster1-ui" class="widget" name="attacker"></monster-form>
+            </section>
+            <div id="environment-sections" class="cell bottom-row">
+                <button id="swap-monsters-toggle" class="environment-subsection" type="button">Attacker &harr; Defender</button>
+                <section id="rng-section" class="environment-subsection">
+                    <h2>RNG</h2>
+                    <rng-form id="rng-ui" class="widget" name="rng"></rng-form>
+                </section>
+                <section id="dungeon-section" class="environment-subsection">
+                    <h2>Dungeon</h2>
+                    <dungeon-form id="dungeon-ui" class="widget" name="dungeon"></dungeon-form>
+                </section>
+            </div>
+            <section id="monster2-section" class="cell bottom-row monster-box" name="defender">
+                <h2>Defender</h2>
+                <monster-form id="monster2-ui" class="widget" name="defender"></monster-form>
+            </section>
+        </div>
+    </body>
+</html>

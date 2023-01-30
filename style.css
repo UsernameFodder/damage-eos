@@ -1,0 +1,198 @@
+body {
+    background-color: #d1ffdd;
+    padding: 1.5em;
+}
+h1, h2 {
+    margin-top: 0;
+    margin-bottom: 1ex;
+}
+[disabled] {
+    pointer-events: none;
+    user-select: none;
+    color: gray;
+}
+.widget div, .widget checkbox-list-input {
+    margin: 0.7ex 0;
+}
+
+.cell {
+    background-color: lavender;
+    padding: 1em;
+    border: 1px solid black;
+}
+
+#grid-wrapper {
+    display: grid;
+    grid-template-columns: 3fr 2fr 3fr;
+    grid-template-rows: 44ex 94ex;
+    min-width: 75em;
+    max-width: 82em;
+}
+.top-row {
+    grid-row: 1;
+}
+.bottom-row {
+    grid-row: 2;
+    border-top: none;
+}
+#move-section, #monster1-section {
+    grid-column: 1;
+}
+#environment-sections {
+    grid-column: 2;
+}
+#calc-results-section, #monster2-section {
+    grid-column: 3;
+}
+
+#move-section {
+    border-top-left-radius: 10px;
+    border-right: none;
+}
+#calc-results-section {
+    overflow-y: auto;
+    border-top-right-radius: 10px;
+    border-left: none;
+}
+#monster1-section {
+    border-bottom-left-radius: 10px;
+    border-right: none;
+}
+#monster2-section {
+    border-bottom-right-radius: 10px;
+    border-left: none;
+}
+.monster-box {
+    overflow-y: auto;
+}
+#info-section h2 {
+    text-align: center;
+}
+.environment-subsection {
+    margin: 1em 0;
+}
+
+#swap-monsters-toggle {
+    display: block;
+    margin: 0 auto;
+}
+
+#move-section h2, .move-form-inputs {
+    float: left;
+}
+move-output tbody th, species-output tbody th {
+    text-align: left;
+}
+move-output {
+    float: right;
+    padding: 0.3em;
+    border: 1px solid black;
+    width: 45%;
+    min-height: 90%;
+    max-height: 96%;
+}
+move-output table {
+    width: 100%;
+}
+move-output th {
+    width: 55%;
+}
+move-output .th-specialNotes {
+    vertical-align: top;
+}
+move-output .tcell-specialNotes:not(:empty) {
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 70%;
+    max-height: 1.7rem;
+    max-width: 90%;
+    padding: 0.3em;
+    overflow-y: auto;
+}
+move-output .unsupported {
+    color: red;
+}
+
+#calc-results-section details {
+    margin-top: 1.5ex;
+}
+#calc-results-section .json-container {
+    background-color: #414339;
+    color: #f8f8f2;
+    border: 1px solid #75715e;
+    border-radius: 5px;
+    padding: 1em;
+    max-height: 22ex;
+    overflow: auto;
+}
+
+monster-form species-input {
+    float: left;
+    width: 45%;
+    margin-bottom: 2ex;
+}
+monster-form species-output {
+    float: right;
+    width: 50%;
+    margin-right: 2%;
+    padding: 0.3em;
+    border: 1px solid black;
+}
+monster-form species-output table {
+    width: 100%;
+}
+monster-form tbody th {
+    width: 50%;
+    margin-left: 0.5em;
+}
+monster-form species-output table {
+    /* margin: 0 auto; */
+}
+.monster-box[name="attacker"] {
+    background-color: lightsalmon;
+}
+.monster-box[name="defender"] {
+    background-color: skyblue;
+}
+
+
+/* Loading overlay */
+body.loading:before {
+    content: "Loading, please wait...";
+    font-weight: bold;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0.5em;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+/* Loading spinner, taken mostly from https://loading.io/css/ */
+body.loading:after {
+    --spinner-size: calc(5vw + 5vh);
+    content: " ";
+    display: block;
+    position: fixed;
+    top: calc(50% - var(--spinner-size) / 2);
+    left: calc(50% - var(--spinner-size) / 2);
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    z-index: 100;
+    border-radius: 50%;
+    border: calc(var(--spinner-size) / 8) solid #cef;
+    border-color: lightcyan transparent lightcyan transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
