@@ -28,4 +28,14 @@ T json_get_int(const nlohmann::json& obj, const std::string name, T default_val 
 std::tuple<DungeonState, MonsterEntity, MonsterEntity, Move, int32_t>
 parse_cfg(const nlohmann::json& cfg);
 
+// Projectile items can be specified as moves
+namespace cfgparse {
+struct ProjectileItem {
+    eos::item_id id;
+    int16_t base_power;
+};
+extern const std::array<ProjectileItem, 7> PROJECTILE_ITEMS;
+std::optional<ProjectileItem> find_projectile_item(std::string name);
+} // namespace cfgparse
+
 #endif

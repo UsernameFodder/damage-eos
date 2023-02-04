@@ -22,6 +22,16 @@ FetchContent_MakeAvailable(json cli11 Catch2)
 set(DAMAGE_SOURCES mathutil.cpp mechanics.cpp damage.cpp)
 set(DAMAGECALC_NO_MAIN_SOURCES ${DAMAGE_SOURCES} idmap.cpp cfgparse.cpp)
 
+add_library(damage ${DAMAGECALC_NO_MAIN_SOURCES})
+target_link_libraries(damage PRIVATE nlohmann_json::nlohmann_json)
+
+# wasm library, disabled by default and must be specified explicitly
+# and built with emscripten
+add_library(damage.wasm ${DAMAGECALC_NO_MAIN_SOURCES} wasm_bindings.cpp)
+target_compile_options(damage.wasm PUBLIC "$<$<CONFIG:Debug>:-fexceptions>")
+target_link_libraries(damage.wasm PRIVATE nlohmann_json::nlohmann_json PUBLIC "$<$<CONFIG:Debug>:-fexceptions>")
+set_target_properties(damage.wasm PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+
 add_executable(damagecalc ${DAMAGECALC_NO_MAIN_SOURCES} damagecalc_cli.cpp)
 target_link_libraries(damagecalc PRIVATE nlohmann_json::nlohmann_json PRIVATE CLI11::CLI11)
 

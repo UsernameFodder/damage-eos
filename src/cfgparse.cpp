@@ -1,3 +1,4 @@
+#include <optional>
 #include "cfgparse.hpp"
 #include "idmap.hpp"
 
@@ -144,7 +145,7 @@ MonsterEntity parse_monster_cfg(const json& monster_obj) {
     for (auto& status : statuses) {
         std::string status_name = status.get<std::string>();
         // special case
-        if (status_name == "guts/marvel scale") {
+        if (ids::STATUS.normalize(status_name) == "guts/marvel scale") {
             monster.statuses.other_negative_status = true;
             continue;
         }
@@ -237,6 +238,31 @@ MonsterEntity parse_monster_cfg(const json& monster_obj) {
 
     return MonsterEntity{monster};
 }
+
+namespace cfgparse {
+const std::array<ProjectileItem, 7> PROJECTILE_ITEMS = {{
+    {eos::ITEM_STICK, mechanics::STICK_POWER},
+    {eos::ITEM_IRON_THORN, mechanics::IRON_THORN_POWER},
+    {eos::ITEM_SILVER_SPIKE, mechanics::SILVER_SPIKE_POWER},
+    {eos::ITEM_GOLD_FANG, mechanics::GOLD_FANG_POWER},
+    {eos::ITEM_CACNEA_SPIKE, mechanics::CACNEA_SPIKE_POWER},
+    {eos::ITEM_CORSOLA_TWIG, mechanics::CORSOLA_TWIG_POWER},
+    {eos::ITEM_GOLD_THORN, mechanics::GOLD_THORN_POWER},
+}};
+
+std::optional<ProjectileItem> find_projectile_item(std::string name) {
+    // not a perfect filter because of TMs, but a good first filter
+    if (ids::ITEM.contains(name)) {
+        auto id = ids::ITEM[name];
+        for (const auto& item : PROJECTILE_ITEMS) {
+            if (item.id == id) {
+                return item;
+            }
+        }
+    }
+    return std::nullopt;
+}
+} // namespace cfgparse
 std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
     const json& id = move_obj.at("id");
     eos::move_id move_id;
@@ -244,27 +270,9 @@ std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
     int32_t base_power;
     if (id.is_string()) {
         std::string str = id.get<std::string>();
-        if (str == ids::ITEM[eos::ITEM_STICK]) {
+        if (auto item = cfgparse::find_projectile_item(str)) {
             move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::STICK_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_IRON_THORN]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::IRON_THORN_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_SILVER_SPIKE]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::SILVER_SPIKE_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_GOLD_FANG]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::GOLD_FANG_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_CACNEA_SPIKE]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::CACNEA_SPIKE_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_CORSOLA_TWIG]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::CORSOLA_TWIG_POWER;
-        } else if (str == ids::ITEM[eos::ITEM_GOLD_THORN]) {
-            move_id = eos::MOVE_PROJECTILE;
-            base_power = mechanics::GOLD_THORN_POWER;
+            base_power = item->base_power;
         } else {
             move_id = ids::MOVE[str];
             base_power = mechanics::get_move_base_power(move_id);

@@ -45,7 +45,7 @@
             "sticky": false
         },
         "exclusive_items": {
-            "effects": ["exp boost"],
+            "effects": ["exp. boost"],
             "stat_boosts": {
                 "atk": 0,
                 "sp_atk": 0,
@@ -99,7 +99,7 @@
             "sticky": false
         },
         "exclusive_items": {
-            "effects": ["exp from damage"],
+            "effects": ["exp. from damage"],
             "stat_boosts": {
                 "atk": 0,
                 "sp_atk": 0,
