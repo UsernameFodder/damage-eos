@@ -24,7 +24,7 @@ h1, h2 {
 #grid-wrapper {
     display: grid;
     grid-template-columns: 3fr 2fr 3fr;
-    grid-template-rows: 44ex 94ex;
+    grid-template-rows: 44ex 99ex;
     min-width: 75em;
     max-width: 82em;
 }
@@ -146,9 +146,6 @@ monster-form species-output table {
 monster-form tbody th {
     width: 50%;
     margin-left: 0.5em;
-}
-monster-form species-output table {
-    /* margin: 0 auto; */
 }
 .monster-box[name="attacker"] {
     background-color: lightsalmon;
