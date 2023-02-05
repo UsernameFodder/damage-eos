@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'index.html'
+      - 'style.css'
+      - 'build-wasm.sh'
+      - 'CMakeLists.txt'
+      - 'favicon.ico'
+    branches:
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_DIR: dist
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Setup emsdk
+        uses: mymindstorm/setup-emsdk@v11
+        with:
+          version: 3.1.29
+          actions-cache-folder: 'emsdk-cache'
+      - name: Build libdamage
+        run: ./build-wasm.sh
+      - name: Install distribution package
+        run: |
+          mkdir -p ${{ env.RELEASE_DIR }}
+          cp -r scripts index.html style.css favicon.ico ${{ env.RELEASE_DIR }}
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ${{ env.RELEASE_DIR }}
+
+  deploy:
+    needs: build
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
