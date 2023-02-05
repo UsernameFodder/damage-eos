@@ -31,15 +31,13 @@ class MonsterForm extends StateTrackingForm {
             teamMemberInput.setChecked(true);
         }
     }
-    inputSelector() {
-        const defaultSelector = super.inputSelector();
+    inputs() {
+        const defaultInputs = Array.from(super.inputs());
         // Include species-input and exclude any of its children, since it controls its own inputs
-        const selectors = defaultSelector.split(",").map((s) => {
-            let base = s.trim();
-            return `${base}:not(species-input ${base})`;
-        });
-        selectors.push("species-input");
-        return selectors.join(", ");
+        const compositeInputs = Array.from(this.querySelectorAll("species-input"));
+        return compositeInputs.concat(defaultInputs.filter(input =>
+            compositeInputs.every(composite => !composite.contains(input))
+        ));
     }
     static getIqSkills() {
         return damagecalc.getIqSkills().map((iq) => ({name: iq, label: iq}));

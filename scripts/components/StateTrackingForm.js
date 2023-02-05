@@ -13,12 +13,12 @@ class StateTrackingForm extends InputStateTracker {
         let template = document.getElementById(this.formTemplate());
         this.appendChild(this.transformTemplateIds(template.content.cloneNode(true)));
 
-        this.querySelectorAll(this.inputSelector()).forEach(
+        this.inputs().forEach(
             input => this.registerCallbackFor(input)
         );
     }
-    inputSelector() {
-        return "checkbox-input, checkbox-list-input, number-input, select-input";
+    inputs() {
+        return this.querySelectorAll("checkbox-input, checkbox-list-input, number-input, select-input");
     }
     transformId(id) {
         // Prefer the parent id as a base, but fall back to name if there's no id attribute
@@ -77,7 +77,7 @@ class StateTrackingForm extends InputStateTracker {
             // Assume they're consistenty ordered
             return !StateTrackingForm.arraysEquals(value ?? [], oldValue ?? []);
         }
-        return value !== oldValue;
+        return changed || (value !== oldValue);
     }
 }
 
