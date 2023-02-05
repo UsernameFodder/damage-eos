@@ -1,3 +1,4 @@
+#include <optional>
 #include "mechanics.hpp"
 
 using namespace mechanics;
@@ -832,8 +833,45 @@ eos::move_category mechanics::get_move_category(eos::move_id move) {
     return data_files::MOVES[move].category;
 }
 
+// These moves have a different base power in Time/Darkness than in Sky
+// See the PMD Info Spreadsheet
+struct TimeDarknessPower {
+    eos::move_id id;
+    int16_t base_power;
+};
+constexpr std::array<TimeDarknessPower, 13> TIME_DARKNESS_BASE_POWER = {{
+    {eos::MOVE_ERUPTION, 30},
+    {eos::MOVE_FIRE_BLAST, 24},
+    {eos::MOVE_FOCUS_PUNCH, 20},
+    {eos::MOVE_FRENZY_PLANT, 30},
+    {eos::MOVE_HYDRO_CANNON, 30},
+    {eos::MOVE_IRON_TAIL, 20},
+    {eos::MOVE_MEGAHORN, 24},
+    {eos::MOVE_NEEDLE_ARM, 12},
+    {eos::MOVE_PSYCHIC, 18},
+    {eos::MOVE_SACRED_FIRE, 20},
+    {eos::MOVE_STEEL_WING, 14},
+    {eos::MOVE_SURF, 18},
+    {eos::MOVE_THUNDER, 24},
+}};
+static constexpr std::optional<int16_t> get_move_base_power_time_darkness(eos::move_id move) {
+    for (auto& entry : TIME_DARKNESS_BASE_POWER) {
+        if (entry.id == move) {
+            return entry.base_power;
+        }
+    }
+    return std::nullopt;
+}
+
 // pmdsky-debug: GetMoveBasePower ([NA] 0x20139CC)
-int16_t mechanics::get_move_base_power(eos::move_id move) {
+// The Time/Darkness flag isn't actually in the game, but is added here for Time/Darkness support
+int16_t mechanics::get_move_base_power(eos::move_id move, bool time_darkness) {
+    // Time/Darkness check is not actually in the game
+    if (time_darkness) {
+        if (auto base_power = get_move_base_power_time_darkness(move)) {
+            return base_power.value();
+        }
+    }
     return data_files::MOVES[move].base_power;
 }
 

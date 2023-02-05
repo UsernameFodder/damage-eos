@@ -108,7 +108,7 @@ inline bool type_ineffective_against_ghost(eos::type_id type) {
 
 eos::type_id get_move_type(eos::move_id move);
 eos::move_category get_move_category(eos::move_id move);
-int16_t get_move_base_power(eos::move_id move);
+int16_t get_move_base_power(eos::move_id move, bool time_darkness = false);
 uint8_t get_move_accuracy(eos::move_id move, bool accuracy2);
 uint8_t get_move_crit_chance(eos::move_id move);
 uint8_t get_move_max_pp(eos::move_id move);

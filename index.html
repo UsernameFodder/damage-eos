@@ -73,10 +73,13 @@
             </table>
         </template>
         <template id="move-form">
-            <move-output for="move-form-id-input"></move-output>
+            <move-output for="move-form-id-input move-form-time-darkness-input"></move-output>
             <div class="move-form-inputs">
                 <div>
                     <select-input name="id" id="move-form-id-input">Move</select-input>
+                </div>
+                <div>
+                    <checkbox-input name="time_darkness" id="move-form-time-darkness-input">Time/Darkness<popup-info slot="details"> A few moves have different base power values in Time/Darkness than in Sky</popup-info></checkbox-input>
                 </div>
                 <div>
                     <number-input name="ginseng" max="99">Ginseng boost<popup-info slot="details"> Boosts the base power of a move</popup-info></number-input>

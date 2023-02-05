@@ -26,14 +26,24 @@ class StateTrackingForm extends InputStateTracker {
         return `${base}-${id}`;
     }
     transformTemplateIds(contentRoot) {
-        for (const attr of ["id", "for"]) {
-            contentRoot.querySelectorAll(`[${attr}]`).forEach(
-                element => {
-                    const templateId = element.getAttribute(attr);
-                    element.setAttribute(attr, this.transformId(templateId));
-                }
-            )
-        }
+        contentRoot.querySelectorAll(`[id]`).forEach(
+            element => {
+                const templateId = element.getAttribute("id");
+                element.setAttribute("id", this.transformId(templateId));
+            }
+        )
+        contentRoot.querySelectorAll(`[for]`).forEach(
+            element => {
+                // for attributes can have space-separated lists
+                const transformed = element.getAttribute("for").split(" ").map(templateId => {
+                    if (!templateId) {
+                        return templateId;
+                    }
+                    return this.transformId(templateId);
+                });
+                element.setAttribute("for", transformed.join(" "));
+            }
+        )
         return contentRoot
     }
     static arraysEquals(a, b) {

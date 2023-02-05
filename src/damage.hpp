@@ -293,6 +293,8 @@ struct Move {
 
     // Not actually in-game. Only needed for Ice Ball, Rollout, Triple Kick
     uint8_t prior_successive_hits = 0;
+    // Not actually in-game. Only needed to support Time/Darkness power differences
+    bool time_darkness = false;
 };
 
 // Based on eos::item

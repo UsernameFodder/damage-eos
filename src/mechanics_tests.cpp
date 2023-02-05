@@ -16,6 +16,10 @@ TEST_CASE("get_move_base_power() works", "[moves]") {
     REQUIRE(get_move_base_power(eos::MOVE_QUICK_ATTACK) == 4);
     REQUIRE(get_move_base_power(eos::MOVE_FRENZY_PLANT) == 45);
 }
+TEST_CASE("get_move_base_power() works in Time/Darkness mode", "[moves]") {
+    REQUIRE(get_move_base_power(eos::MOVE_QUICK_ATTACK, true) == 4);
+    REQUIRE(get_move_base_power(eos::MOVE_FRENZY_PLANT, true) == 30);
+}
 TEST_CASE("get_move_accuracy() works", "[moves]") {
     REQUIRE(get_move_accuracy(eos::MOVE_HYDRO_CANNON, false) == 125);
     REQUIRE(get_move_accuracy(eos::MOVE_HYDRO_CANNON, true) == 84);

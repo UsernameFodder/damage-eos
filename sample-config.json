@@ -3,7 +3,8 @@
         "id": "ember",
         "ginseng": 0,
         "pp": 0,
-        "prior_successive_hits": 0
+        "prior_successive_hits": 0,
+        "time_darkness": false
     },
     "attacker": {
         "species": "charmander",

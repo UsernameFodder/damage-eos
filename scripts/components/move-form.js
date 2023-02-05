@@ -14,7 +14,7 @@ class MoveForm extends StateTrackingForm {
     }
     static getMoves() {
         const moves = damagecalc.getMoves().map(move => {
-            const details = damagecalc.getMoveDetails(move);
+            const details = damagecalc.getMoveDetails(move, false);
             details.move = move;
             return details;
         });

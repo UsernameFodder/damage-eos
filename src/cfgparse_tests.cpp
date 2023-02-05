@@ -189,12 +189,14 @@ TEST_CASE("Move object is parsed correctly") {
         {"ginseng", 1},
         {"pp", 2},
         {"prior_successive_hits", 3},
+        {"time_darkness", true},
     });
 
     REQUIRE(move.id == eos::MOVE_HEAT_WAVE);
     REQUIRE(move.ginseng == 1);
     REQUIRE(move.pp == 2);
     REQUIRE(move.prior_successive_hits == 3);
+    REQUIRE(move.time_darkness);
     REQUIRE(power == mechanics::get_move_base_power(eos::MOVE_HEAT_WAVE));
 }
 TEST_CASE("Move object is parsed correctly with a thrown item") {

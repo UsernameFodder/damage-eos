@@ -211,7 +211,7 @@ struct MoveDetails {
     bool unsupported = 0;
     std::string special_notes = "";
 };
-MoveDetails get_move_details(std::string name) {
+MoveDetails get_move_details(std::string name, bool time_darkness = false) {
     try {
         mechanics::data_files::MoveData data;
         int16_t base_power;
@@ -224,7 +224,7 @@ MoveDetails get_move_details(std::string name) {
             special_notes = "Projectile item (not a real move)";
         } else {
             data = mechanics::data_files::MOVES[ids::MOVE[name]];
-            base_power = data.base_power;
+            base_power = mechanics::get_move_base_power(ids::MOVE[name], time_darkness);
             special_notes = data.special_notes;
         }
 

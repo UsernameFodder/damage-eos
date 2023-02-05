@@ -265,6 +265,7 @@ std::optional<ProjectileItem> find_projectile_item(std::string name) {
 } // namespace cfgparse
 std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
     const json& id = move_obj.at("id");
+    bool time_darkness = move_obj.value<bool>("time_darkness", false);
     eos::move_id move_id;
 
     int32_t base_power;
@@ -275,7 +276,7 @@ std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
             base_power = item->base_power;
         } else {
             move_id = ids::MOVE[str];
-            base_power = mechanics::get_move_base_power(move_id);
+            base_power = mechanics::get_move_base_power(move_id, time_darkness);
         }
     } else {
         throw std::runtime_error("custom moves not implemented");
@@ -283,7 +284,7 @@ std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
 
     return {Move{move_id, json_get_int<uint8_t>(move_obj, "ginseng"),
                  json_get_int<uint8_t>(move_obj, "pp"),
-                 json_get_int<uint8_t>(move_obj, "prior_successive_hits")},
+                 json_get_int<uint8_t>(move_obj, "prior_successive_hits"), time_darkness},
             base_power};
 }
 

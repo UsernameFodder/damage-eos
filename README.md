@@ -48,6 +48,5 @@ Where relevant, the config file works with names rather than internal IDs. For e
 ## Not Yet Implemented
 - Some special-case moves with unique handling
   - One notable group is all moves using the "fixed damage" routines. This includes moves that are not actually _fixed_ damage, but are implemented using these routines. For example, Psywave.
-- Time/Darkness base power differences (only affects a small number of moves)
 - Overrides for species types and abilities for scenarios like Skill Swap.
 - Probably other things I'm forgetting

@@ -1,3 +1,4 @@
+import "./base/checkbox-input.js"
 import "./base/select-input.js"
 
 // Abstract base class
@@ -5,6 +6,7 @@ class TableOutput extends HTMLElement {
     constructor() {
         super();
 
+        this.stateChangeHandler = this.stateChangeHandler.bind(this);
         this.setDefaults();
     }
     tableType() {
@@ -33,22 +35,28 @@ class TableOutput extends HTMLElement {
         this.unsupportedElement = dummyNode.querySelector(".unsupported");
         this.unsupportedElement.remove();
 
-        const inputId = this.getAttribute("for");
-
-        const inputElement = document.getElementById(inputId);
-        // needed in case the input element is after the output and hasn't been upgraded yet
-        customElements.upgrade(inputElement);
-        inputElement.registerCallback((source, contentId) => this.updateContent(contentId));
+        const inputIds = this.getAttribute("for").split(" ");
+        for (const inputId of inputIds) {
+            if (!inputId) {
+                continue;
+            }
+            const inputElement = document.getElementById(inputId);
+            // needed in case the input element is after the output and hasn't been upgraded yet
+            customElements.upgrade(inputElement);
+            inputElement.registerCallback(this.stateChangeHandler);
+        }
     }
-    updateContent(contentId) {
+    stateChangeHandler(source, contentId) {
+        this.updateContent(source, contentId);
+        this.render();
+    }
+    updateContent(source, contentId) {
         this[this.tableType()] = contentId;
         if (contentId) {
             Object.assign(this, this.getContentDetails(contentId));
         } else {
             this.setDefaults();
         }
-
-        this.render();
     }
     render() {
         if (this.unsupported) {

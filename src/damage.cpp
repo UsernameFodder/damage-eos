@@ -157,7 +157,8 @@ int32_t MonsterEntity::get_move_power(Move move) const {
     if (move.id == eos::MOVE_HIDDEN_POWER) {
         return static_cast<int32_t>(move.ginseng) + monster.hidden_power_base_power;
     }
-    int32_t power = static_cast<int32_t>(move.ginseng) + mechanics::get_move_base_power(move.id);
+    int32_t power = static_cast<int32_t>(move.ginseng) +
+                    mechanics::get_move_base_power(move.id, move.time_darkness);
     if (item_active(eos::ITEM_SPACE_GLOBE)) {
         power *= 2;
     }
