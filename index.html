@@ -176,7 +176,7 @@
                             <td class="details-base"></td>
                         </tr>
                         <tr>
-                            <th>Static multiplier<popup-info> The multiplier applied to the base damage, not counting an additional random multiplier applied later. This is where things like STAB, type-advantage multipliers, etc. are applied.</popup-info></th>
+                            <th>Static multiplier<popup-info> The "static" part of the multiplier applied to the base damage, not counting an additional random multiplier applied later. This includes things like move-specific multipliers, Reckless, and Iron Fist. Things like STAB, type-advantage multipliers, etc. are part of a "dynamic" multiplier that isn't included here.</popup-info></th>
                             <td class="details-static-mult"></td>
                         </tr>
                         <tr>
@@ -450,16 +450,16 @@
                 <checkbox-input name="held_item.sticky">Sticky<popup-info slot="details" width="100"> Sticky held items do nothing</popup-info></checkbox-input>
             </div>
             <div>
-                <number-input name="exclusive_items.stat_boosts.atk" max="255">Exclusive item Atk boost</number-input>
+                <number-input name="exclusive_items.stat_boosts.atk" max="255">Exclusive item Atk boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
             <div>
-                <number-input name="exclusive_items.stat_boosts.sp_atk" max="255">Exclusive item SpA boost</number-input>
+                <number-input name="exclusive_items.stat_boosts.sp_atk" max="255">Exclusive item SpA boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
             <div>
-                <number-input name="exclusive_items.stat_boosts.def" max="255">Exclusive item Def boost</number-input>
+                <number-input name="exclusive_items.stat_boosts.def" max="255">Exclusive item Def boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
             <div>
-                <number-input name="exclusive_items.stat_boosts.sp_def" max="255">Exclusive item SpD boost</number-input>
+                <number-input name="exclusive_items.stat_boosts.sp_def" max="255">Exclusive item SpD boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
             <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Special effects from exclusive items besides ordinary stat boosts</popup-info></checkbox-list-input>
             <checkbox-list-input name="statuses">Statuses<popup-info slot="details">Any status not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
@@ -540,7 +540,7 @@
             </section>
             <section id="monster1-section" class="cell bottom-row monster-box" name="attacker">
                 <h2>Attacker</h2>
-                <monster-form id="monster1-ui" class="widget" name="attacker"></monster-form>
+                <monster-form id="monster1-ui" class="widget" name="attacker" default-team></monster-form>
             </section>
             <div id="environment-sections" class="cell bottom-row">
                 <button id="swap-monsters-toggle" class="environment-subsection" type="button">Attacker &harr; Defender</button>

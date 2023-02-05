@@ -33,6 +33,12 @@ class CheckboxInput extends HTMLElement {
             valueCallback(this.getAttribute("name"), event.currentTarget.checked);
         });
     }
+
+    setChecked(value) {
+        this.inputElement.checked = value;
+        // trigger any callbacks that were already registered
+        this.inputElement.dispatchEvent(new Event("change"));
+    }
 }
 
 customElements.define("checkbox-input", CheckboxInput);

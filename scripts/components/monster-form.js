@@ -1,5 +1,6 @@
 // Attributes: name
 
+import "./base/checkbox-input.js"
 import "./base/checkbox-list-input.js"
 import "./base/select-input.js"
 import "./species-input.js"
@@ -24,6 +25,11 @@ class MonsterForm extends StateTrackingForm {
         exclusiveItemEffectsInput.populateItems(MonsterForm.getExclusiveItemEffects());
         const statusesInput = this.querySelector("checkbox-list-input[name='statuses']");
         statusesInput.populateItems(MonsterForm.getStatuses());
+
+        if (this.hasAttribute("default-team")) {
+            const teamMemberInput = this.querySelector("checkbox-input[name='is_team_member']");
+            teamMemberInput.setChecked(true);
+        }
     }
     inputSelector() {
         const defaultSelector = super.inputSelector();
