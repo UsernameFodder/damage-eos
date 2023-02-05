@@ -1,4 +1,4 @@
-// Attributes: name, max, min, value, step, width
+// Attributes: name, max, min, value, step, width, list-options
 // Slots: label (unnamed), details
 
 class NumberInput extends HTMLElement {
@@ -21,6 +21,7 @@ class NumberInput extends HTMLElement {
         let defaultValue = this.getAttribute("value") ?? min;
         const step = this.getAttribute("step");
         const width = this.getAttribute("width") ?? 6;
+        const listOptions = this.getAttribute("list-options") ?? "";
 
         // Size the input element dynamically
         const styleElement = document.createElement("style");
@@ -33,6 +34,23 @@ class NumberInput extends HTMLElement {
             this.inputElement.setAttribute("id", id);
             const labelElement = this.shadowRoot.querySelector("label");
             labelElement.setAttribute("for", id);
+
+            if (listOptions !== "") {
+                // Create a datalist element dynamically
+                const datalistId = `${id}-datalist`;
+                const datalistElement = document.createElement("datalist");
+                datalistElement.setAttribute("id", datalistId);
+                for (const opt of listOptions.split(" ")) {
+                    if (!opt) {
+                        continue;
+                    }
+                    const optElement = document.createElement("option");
+                    optElement.setAttribute("value", opt);
+                    datalistElement.appendChild(optElement);
+                }
+                this.shadowRoot.insertBefore(datalistElement, this.inputElement);
+                this.inputElement.setAttribute("list", datalistId);
+            }
         }
         this.inputElement.setAttribute("min", min);
         if (max !== null) {

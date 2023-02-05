@@ -400,22 +400,22 @@
             <div>
                 <number-input name="atk" max="255" value="3" width="4">Atk</number-input>
                 <number-input name="stat_modifiers.stages.atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Charm and Memento have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Charm, Memento, and Aurora Beam have multiplier effects separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="sp_atk" max="255" value="4" width="4">SpA</number-input>
                 <number-input name="stat_modifiers.stages.sp_atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Charm and Memento have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Memento has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="def" max="255" value="2" width="4">Def</number-input>
                 <number-input name="stat_modifiers.stages.def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Screech have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Screech has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="sp_def" max="255" value="3" width="4">SpD</number-input>
                 <number-input name="stat_modifiers.stages.sp_def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.002" width="4">Multiplier<popup-info slot="details" width="100"> Moves like Screech have stat multiplier effects separate from conventional stat stages</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Never used in-game, but in principle this multiplier is analogous to those for other stats.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="stat_modifiers.stages.accuracy" max="20" value="10">Accuracy stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
