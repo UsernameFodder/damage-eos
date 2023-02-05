@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <iostream>
-#include <optional>
 #include <emscripten/bind.h>
 #include "cfgparse.hpp"
 #include "damage.hpp"
@@ -53,13 +52,68 @@ std::vector<std::string> get_moves() {
     }
     return all_moves;
 }
-std::vector<std::string> get_species() { return ids::MONSTER.all_except(); }
+std::vector<std::string> get_species() {
+    return ids::MONSTER.all_except({eos::MONSTER_NONE, eos::MONSTER_NONE_SECONDARY});
+}
 std::vector<std::string> get_types() { return ids::TYPE.all_except({eos::TYPE_NEUTRAL}); }
-std::vector<std::string> get_items() { return ids::ITEM.all_except(); }
+std::vector<std::string> get_held_items() {
+    // Only a couple held items are actually used anywhere; only return these
+    return {
+        ids::ITEM[eos::ITEM_NOTHING],      ids::ITEM[eos::ITEM_Y_RAY_SPECS],
+        ids::ITEM[eos::ITEM_SCOPE_LENS],   ids::ITEM[eos::ITEM_PATSY_BAND],
+        ids::ITEM[eos::ITEM_POWER_BAND],   ids::ITEM[eos::ITEM_DEF_SCARF],
+        ids::ITEM[eos::ITEM_SPECIAL_BAND], ids::ITEM[eos::ITEM_ZINC_BAND],
+        ids::ITEM[eos::ITEM_DETECT_BAND],  ids::ITEM[eos::ITEM_SPACE_GLOBE],
+        ids::ITEM[eos::ITEM_MUNCH_BELT],   ids::ITEM[eos::ITEM_WEATHER_BAND],
+        ids::ITEM[eos::ITEM_HEAL_SEED],    ids::ITEM[eos::ITEM_ORAN_BERRY],
+        ids::ITEM[eos::ITEM_SITRUS_BERRY], ids::ITEM[eos::ITEM_EYEDROP_SEED],
+        ids::ITEM[eos::ITEM_REVIVER_SEED], ids::ITEM[eos::ITEM_BLINKER_SEED],
+        ids::ITEM[eos::ITEM_DOOM_SEED],    ids::ITEM[eos::ITEM_X_EYE_SEED],
+        ids::ITEM[eos::ITEM_LIFE_SEED],    ids::ITEM[eos::ITEM_RAWST_BERRY],
+        ids::ITEM[eos::ITEM_HUNGER_SEED],  ids::ITEM[eos::ITEM_QUICK_SEED],
+        ids::ITEM[eos::ITEM_PECHA_BERRY],  ids::ITEM[eos::ITEM_CHERI_BERRY],
+        ids::ITEM[eos::ITEM_TOTTER_SEED],  ids::ITEM[eos::ITEM_SLEEP_SEED],
+        ids::ITEM[eos::ITEM_PLAIN_SEED],   ids::ITEM[eos::ITEM_WARP_SEED],
+        ids::ITEM[eos::ITEM_BLAST_SEED],   ids::ITEM[eos::ITEM_JOY_SEED],
+        ids::ITEM[eos::ITEM_CHESTO_BERRY], ids::ITEM[eos::ITEM_STUN_SEED],
+        ids::ITEM[eos::ITEM_GOLDEN_SEED],  ids::ITEM[eos::ITEM_VILE_SEED],
+        ids::ITEM[eos::ITEM_PURE_SEED],    ids::ITEM[eos::ITEM_VIOLENT_SEED],
+        ids::ITEM[eos::ITEM_VANISH_SEED],  ids::ITEM[eos::ITEM_DROPEYE_SEED],
+        ids::ITEM[eos::ITEM_REVISER_SEED], ids::ITEM[eos::ITEM_SLIP_SEED],
+        ids::ITEM[eos::ITEM_VIA_SEED],     ids::ITEM[eos::ITEM_OREN_BERRY],
+        ids::ITEM[eos::ITEM_DOUGH_SEED],   ids::ITEM[eos::ITEM_SILVER_BOW],
+        ids::ITEM[eos::ITEM_BROWN_BOW],    ids::ITEM[eos::ITEM_RED_BOW],
+        ids::ITEM[eos::ITEM_PINK_BOW],     ids::ITEM[eos::ITEM_ORANGE_BOW],
+        ids::ITEM[eos::ITEM_YELLOW_BOW],   ids::ITEM[eos::ITEM_LIME_BOW],
+        ids::ITEM[eos::ITEM_GREEN_BOW],    ids::ITEM[eos::ITEM_VIRIDIAN_BOW],
+        ids::ITEM[eos::ITEM_MINTY_BOW],    ids::ITEM[eos::ITEM_SKY_BLUE_BOW],
+        ids::ITEM[eos::ITEM_BLUE_BOW],     ids::ITEM[eos::ITEM_COBALT_BOW],
+        ids::ITEM[eos::ITEM_PURPLE_BOW],   ids::ITEM[eos::ITEM_VIOLET_BOW],
+        ids::ITEM[eos::ITEM_FUCHSIA_BOW],
+    };
+}
 std::vector<std::string> get_weather_types() {
     return ids::WEATHER.all_except({eos::WEATHER_RANDOM});
 }
-std::vector<std::string> get_iq_skills() { return ids::IQ.all_except({eos::IQ_NONE}); }
+std::vector<std::string> get_iq_skills() {
+    // Only a couple IQ skills are actually used anywhere; only return these
+    return {
+        ids::IQ[eos::IQ_TYPE_ADVANTAGE_MASTER],
+        ids::IQ[eos::IQ_SURE_HIT_ATTACKER],
+        ids::IQ[eos::IQ_QUICK_DODGER],
+        ids::IQ[eos::IQ_SHARPSHOOTER],
+        ids::IQ[eos::IQ_AGGRESSOR],
+        ids::IQ[eos::IQ_DEFENDER],
+        ids::IQ[eos::IQ_POWER_PITCHER],
+        ids::IQ[eos::IQ_CONCENTRATOR],
+        ids::IQ[eos::IQ_COUNTER_BASHER],
+        ids::IQ[eos::IQ_CHEERLEADER],
+        ids::IQ[eos::IQ_ERRATIC_PLAYER],
+        ids::IQ[eos::IQ_PRACTICE_SWINGER],
+        ids::IQ[eos::IQ_CLUTCH_PERFORMER],
+        ids::IQ[eos::IQ_CRITICAL_DODGER],
+    };
+}
 
 struct NameWithAlternates {
     std::string name;
@@ -91,12 +145,56 @@ std::vector<NameWithAlternates> get_statuses() {
 }
 
 std::vector<NameWithAlternates> get_exclusive_item_effects() {
-    auto all_names = ids::EXCLUSIVE_ITEM_EFFECT.all_with_alts_except(
-        {eos::EXCLUSIVE_EFF_STAT_BOOST, eos::EXCLUSIVE_EFF_LAST});
+    // Only some exclusive item effects are actually used anywhere; only return these
+    constexpr std::array<eos::exclusive_item_effect_id, 42> used = {
+        eos::EXCLUSIVE_EFF_NO_CRITICAL_HITS,
+        eos::EXCLUSIVE_EFF_HALVED_PHYSICAL_DAMAGE,
+        eos::EXCLUSIVE_EFF_HALVED_SPECIAL_DAMAGE,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_CLEAR,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_SUNNY,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_SANDSTORM,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_CLOUDY,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_RAINY,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_HAIL,
+        eos::EXCLUSIVE_EFF_EVASION_BOOST_WHEN_FOGGY,
+        eos::EXCLUSIVE_EFF_BYPASS_REFLECT_LIGHT_SCREEN,
+        eos::EXCLUSIVE_EFF_SCRAPPY,
+        eos::EXCLUSIVE_EFF_MIRACLE_EYE,
+        eos::EXCLUSIVE_EFF_HALVED_DAMAGE,
+        eos::EXCLUSIVE_EFF_DAMAGE_BOOST_50_PCT,
+        eos::EXCLUSIVE_EFF_NO_FIRE_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_WATER_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_GRASS_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_ELECTRIC_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_FIGHTING_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_GROUND_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_FLYING_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_PSYCHIC_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_GHOST_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_DRAGON_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_DARK_DAMAGE,
+        eos::EXCLUSIVE_EFF_NO_STEEL_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_FIRE_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_WATER_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_GRASS_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_ELECTRIC_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_ICE_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_FIGHTING_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_GROUND_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_FLYING_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_PSYCHIC_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_BUG_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_ROCK_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_GHOST_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_DRAGON_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_DARK_DAMAGE,
+        eos::EXCLUSIVE_EFF_ABSORB_STEEL_DAMAGE,
+    };
     std::vector<NameWithAlternates> effects;
-    effects.reserve(all_names.size());
-    for (auto& [name, alts] : all_names) {
-        effects.push_back({name, alts});
+    effects.reserve(used.size());
+    for (auto u : used) {
+        effects.push_back(
+            {ids::EXCLUSIVE_ITEM_EFFECT[u], ids::EXCLUSIVE_ITEM_EFFECT.alternate_names(u)});
     }
     return effects;
 }
@@ -462,7 +560,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
     function("getMoves", &js::get_moves);
     function("getSpecies", &js::get_species);
     function("getTypes", &js::get_types);
-    function("getItems", &js::get_items);
+    function("getHeldItems", &js::get_held_items);
     function("getWeatherTypes", &js::get_weather_types);
     function("getIqSkills", &js::get_iq_skills);
     function("getStatuses", &js::get_statuses);

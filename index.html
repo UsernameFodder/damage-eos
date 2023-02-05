@@ -386,7 +386,7 @@
                 <checkbox-input name="is_team_member">Team member<popup-info slot="details" width="250"> Team members are treated differently than enemies in some ways. For example, only team members can benefit from exclusive item effects, and damage dealt by enemies is reduced by a factor of 85/64.</popup-info></checkbox-input>
             </div>
             <div>
-                <checkbox-input name="is_team_leader">Leader <popup-info slot="details"> The team leader is treated differently in cases where the belly is empty or Y-Ray Specs are equipped</popup-info></checkbox-input>
+                <checkbox-input name="is_team_leader">Leader<popup-info slot="details"> The team leader is treated differently in cases where the belly is empty or Y-Ray Specs are equipped</popup-info></checkbox-input>
             </div>
             <div>
                 <number-input name="level" max="255" value="5">Level<popup-info slot="details"> A Pokémon's level directly increases damage dealt</popup-info></number-input>
@@ -395,27 +395,27 @@
                 <number-input name="hp" max="32767" value="22">HP<popup-info slot="details"> Current HP. This controls HP-dependent effects for things like Brine, Eruption, pinch abilities, etc.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="max_hp" max="32767" value="22">Max HP<popup-info slot="details"> Current HP is compared to its maximum value when determining HP-dependent effects</popup-info></number-input>
+                <number-input name="max_hp" max="32767" value="22">Max HP<popup-info slot="details"> Current HP is compared to its maximum value when determining HP-dependent effects. This should be the visible Max HP, <em>including</em> any boosts.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="atk" max="255" value="3" width="4">Atk</number-input>
+                <number-input name="atk" max="255" value="3" width="4">Atk<popup-info slot="details"> This should be the base Attack, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Charm, Memento, and Aurora Beam have multiplier effects separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Charm, Memento, and Aurora Beam have multiplier effects separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="sp_atk" max="255" value="4" width="4">SpA</number-input>
+                <number-input name="sp_atk" max="255" value="4" width="4">SpA<popup-info slot="details"> This should be the base Special Attack, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.sp_atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Memento has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Memento has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="def" max="255" value="2" width="4">Def</number-input>
+                <number-input name="def" max="255" value="2" width="4">Def<popup-info slot="details"> This should be the base Defense, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Screech has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Screech has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="sp_def" max="255" value="3" width="4">SpD</number-input>
+                <number-input name="sp_def" max="255" value="3" width="4">SpD<popup-info slot="details"> This should be the base Special Defense, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.sp_def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.002" width="4" list-options="1.0 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125">Multiplier<popup-info slot="details" width="100"> Never used in-game, but in principle this multiplier is analogous to those for other stats.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Never used in-game, but in principle this multiplier is analogous to those for other stats.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="stat_modifiers.stages.accuracy" max="20" value="10">Accuracy stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
@@ -435,19 +435,19 @@
             <div>
                 <number-input name="iq" max="32767">IQ<popup-info slot="details"> Controls the power of Return/Frustration</popup-info></number-input>
             </div>
-            <checkbox-list-input name="iq_skills">IQ skills</checkbox-list-input>
+            <checkbox-list-input name="iq_skills">IQ skills<popup-info slot="details"> Any IQ skill not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
             <div>
                 <number-input name="belly" max="100" value="100">Belly<popup-info slot="details"> A Pokémon with empty belly that isn't the leader will always deal 1 damage</popup-info></number-input>
             </div>
             <div>
-                <select-input name="hidden_power_type">Hidden Power type<popup-info slot="details"> Varies by Pokémon; only relevant for Hidden Power</popup-info></select-input>
+                <select-input name="hidden_power_type">Hidden Power type<popup-info slot="details"> Randomized when entering a dungeon; only relevant for Hidden Power</popup-info></select-input>
             </div>
             <div>
-                <number-input name="hidden_power_base_power" max="32767">Hidden Power base power<popup-info slot="details"> Varies by Pokémon; only relevant for Hidden Power</popup-info></select-input>
+                <number-input name="hidden_power_base_power" max="32767">Hidden Power base power<popup-info slot="details"> Randomized when entering a dungeon; only relevant for Hidden Power. In-game, this varies between 2 and 15.</popup-info></number-input>
             </div>
             <div>
-                <select-input name="held_item.id">Held item</select-input>
-                <checkbox-input name="held_item.sticky">Sticky<popup-info slot="details" width="100"> Sticky held items do nothing</popup-info></checkbox-input>
+                <select-input name="held_item.id">Held item<popup-info slot="details"> Any item not listed here is either functionally equivalent to Nothing for the purposes of damage calculation, or is unsupported</popup-info></select-input>
+                <checkbox-input name="held_item.sticky">Sticky<popup-info slot="details" width="100"> Sticky held items still affect Natural Gift, but otherwise do nothing</popup-info></checkbox-input>
             </div>
             <div>
                 <number-input name="exclusive_items.stat_boosts.atk" max="255">Exclusive item Atk boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
@@ -461,8 +461,8 @@
             <div>
                 <number-input name="exclusive_items.stat_boosts.sp_def" max="255">Exclusive item SpD boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
-            <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Special effects from exclusive items besides ordinary stat boosts</popup-info></checkbox-list-input>
-            <checkbox-list-input name="statuses">Statuses<popup-info slot="details">Any status not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
+            <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Special effects from exclusive items besides ordinary stat boosts. Any exclusive item effect not listed here either has no effect on the damage calculation, or is unsupported.</popup-info></checkbox-list-input>
+            <checkbox-list-input name="statuses">Statuses<popup-info slot="details"> Any status not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
             <div>
                 <checkbox-input name="boosted_attacks">Boosted attacks<popup-info slot="details"> This applies a 1.5x multiplier on damage dealt by this Pokémon. It's uncertain when this flag is set...maybe for angry Kecleon shopkeepers?</popup-info></checkbox-input>
             </div>

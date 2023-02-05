@@ -1518,7 +1518,7 @@ const data_files::MoveData mechanics::data_files::MOVES[559] = {
      ""},
     {eos::MOVE_MEGAHORN, 38, eos::TYPE_BUG, eos::CATEGORY_PHYSICAL, 7, 100, 84, 1, 8, false, ""},
     {eos::MOVE_HIDDEN_POWER, 2, eos::TYPE_NONE, eos::CATEGORY_SPECIAL, 12, 100, 88, 1, 8, false,
-     "Type and power vary by user"},
+     "Type and power are randomized when entering a dungeon"},
     {eos::MOVE_METAL_CLAW, 10, eos::TYPE_STEEL, eos::CATEGORY_PHYSICAL, 15, 100, 90, 1, 8, false,
      ""},
     {eos::MOVE_ATTRACT, 0, eos::TYPE_NORMAL, eos::CATEGORY_STATUS, 10, 75, 78, 1, 8, true,

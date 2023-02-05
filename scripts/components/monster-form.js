@@ -17,7 +17,7 @@ class MonsterForm extends StateTrackingForm {
         const hiddenPowerTypeInput = this.querySelector("select-input[name='hidden_power_type']");
         hiddenPowerTypeInput.populateOptions(damagecalc.getTypes());
         const heldItemInput = this.querySelector("select-input[name='held_item.id']");
-        heldItemInput.populateOptions(damagecalc.getItems());
+        heldItemInput.populateOptions(damagecalc.getHeldItems());
 
         const iqSkillsInput = this.querySelector("checkbox-list-input[name='iq_skills']");
         iqSkillsInput.populateItems(MonsterForm.getIqSkills());
