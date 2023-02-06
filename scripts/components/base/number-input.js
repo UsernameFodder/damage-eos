@@ -10,7 +10,8 @@ class NumberInput extends HTMLElement {
         shadow.appendChild(template.content.cloneNode(true));
 
         this.inputElement = shadow.querySelector("input");
-        this.previousValue = 0;
+        this.previousValue = "";
+        this.minValue = 0;
         this.restorePreviousValue = this.restorePreviousValue.bind(this);
     }
 
@@ -66,11 +67,12 @@ class NumberInput extends HTMLElement {
             this.inputElement.setAttribute("value", defaultValue);
         }
         this.previousValue = defaultValue;
+        this.minValue = Number(min);
         this.inputElement.addEventListener("invalid", this.restorePreviousValue);
 
         this.inputElement.addEventListener("input", (event) => {
             if (event.currentTarget.checkValidity()) {
-                this.previousValue = event.currentTarget.valueAsNumber;
+                this.previousValue = event.currentTarget.value;
             }
         });
     }
@@ -78,14 +80,27 @@ class NumberInput extends HTMLElement {
     restorePreviousValue() {
         this.inputElement.value = this.previousValue;
     }
+    getInputValue() {
+        if (this.inputElement.validity.valid) {
+            // Treat empty as the minimum value. This allows users to delete the
+            // input fully before entering a new value
+            if (this.inputElement.value === "") {
+                return this.minValue;
+            }
+            return this.inputElement.valueAsNumber;
+        }
+        return null;
+    }
 
     registerCallback(valueCallback) {
-        if (this.inputElement.validity.valid) {
-            valueCallback(this.getAttribute("name"), this.inputElement.valueAsNumber);
+        const inputValue = this.getInputValue();
+        if (inputValue !== null) {
+            valueCallback(this.getAttribute("name"), inputValue);
         }
         this.inputElement.addEventListener("input", (event) => {
-            if (event.currentTarget.validity.valid) {
-                valueCallback(this.getAttribute("name"), event.currentTarget.valueAsNumber);
+            const inputValue = this.getInputValue();
+            if (inputValue !== null) {
+                valueCallback(this.getAttribute("name"), inputValue);
             }
         });
     }
