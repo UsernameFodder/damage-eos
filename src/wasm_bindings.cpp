@@ -52,6 +52,15 @@ std::vector<std::string> get_moves() {
     }
     return all_moves;
 }
+std::vector<std::string> get_projectile_moves() {
+    std::vector<std::string> projectiles;
+    projectiles.reserve(1 + cfgparse::PROJECTILE_ITEMS.size());
+    projectiles.push_back(ids::MOVE[eos::MOVE_PROJECTILE]);
+    for (auto& proj : cfgparse::PROJECTILE_ITEMS) {
+        projectiles.push_back(ids::ITEM[proj.id]);
+    }
+    return projectiles;
+}
 std::vector<std::string> get_species() {
     return ids::MONSTER.all_except({eos::MONSTER_NONE, eos::MONSTER_NONE_SECONDARY});
 }
@@ -589,6 +598,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
         .field("details", &js::CalcDamageResult::details);
 
     function("getMoves", &js::get_moves);
+    function("getProjectileMoves", &js::get_projectile_moves);
     function("getSpecies", &js::get_species);
     function("getTypes", &js::get_types);
     function("getAbilities", &js::get_abilities);

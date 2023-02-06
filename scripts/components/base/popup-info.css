@@ -28,7 +28,8 @@ img {
     width: 0.9rem;
 }
 
-.icon:hover + .info, .icon:focus + .info {
+.icon:hover + .info, .icon:focus + .info,
+.info:hover {
     opacity: 1;
     visibility: visible;
 }

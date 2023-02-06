@@ -242,11 +242,11 @@
                             <td class="details-patsy-band"></td>
                         </tr>
                         <tr>
-                            <th>Half physical damage<popup-info> Whether or not Reflect or the Time Shield halved the damage from a physical move</popup-info></th>
+                            <th>Half physical damage<popup-info> Whether or not Reflect or the "Halved physical damage" exclusive item effect halved the damage from a physical move</popup-info></th>
                             <td class="details-half-physical"></td>
                         </tr>
                         <tr>
-                            <th>Half special damage<popup-info> Whether or not Light Screen or the Aqua Mantle halved the damage from a special move</popup-info></th>
+                            <th>Half special damage<popup-info> Whether or not Light Screen or the "Halved special damage" exclusive item effect halved the damage from a special move</popup-info></th>
                             <td class="details-half-special"></td>
                         </tr>
                         <tr>
@@ -421,27 +421,27 @@
                 <number-input name="hp" max="32767" value="22">HP<popup-info slot="details"> Current HP. This controls HP-dependent effects for things like Brine, Eruption, pinch abilities, etc.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="max_hp" max="32767" value="22">Max HP<popup-info slot="details"> Current HP is compared to its maximum value when determining HP-dependent effects. This should be the visible Max HP, <em>including</em> any boosts.</popup-info></number-input>
+                <number-input name="max_hp" max="32767" value="22">Max HP<popup-info slot="details"> Current HP is compared to its maximum value when determining HP-dependent effects. This should be the visible Max HP, <em>including</em> any boosts. For help with picking stats, see <a href="https://gamefaqs.gamespot.com/ds/955859-pokemon-mystery-dungeon-explorers-of-sky/faqs/77718">ZappedAmpharos's level-up tables</a>.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="atk" max="255" value="3" width="4">Atk<popup-info slot="details"> This should be the base Attack, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
+                <number-input name="atk" max="255" value="3" width="4">Atk<popup-info slot="details"> This should be the base Attack, <em>before</em> any temporary boosts from held items or exclusive items. For help with picking stats, see <a href="https://gamefaqs.gamespot.com/ds/955859-pokemon-mystery-dungeon-explorers-of-sky/faqs/77718">ZappedAmpharos's level-up tables</a>.</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Charm, Memento, and Aurora Beam have multiplier effects separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Charm, Memento, and Aurora Beam have multiplier effects separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options, or see the "Division Stage" table on the <a href="https://docs.google.com/spreadsheets/d/18utO_lCpWQ7iXY9wpbtxXpgmzebEI2IRjADp6IrUKZ0/view#gid=422511051">PMD Info Spreadsheet</a>.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="sp_atk" max="255" value="4" width="4">SpA<popup-info slot="details"> This should be the base Special Attack, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
+                <number-input name="sp_atk" max="255" value="4" width="4">SpA<popup-info slot="details"> This should be the base Special Attack, <em>before</em> any temporary boosts from held items or exclusive items. For help with picking stats, see <a href="https://gamefaqs.gamespot.com/ds/955859-pokemon-mystery-dungeon-explorers-of-sky/faqs/77718">ZappedAmpharos's level-up tables</a>.</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.sp_atk" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Memento has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_atk" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Memento has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options, or see the "Division Stage" table on the <a href="https://docs.google.com/spreadsheets/d/18utO_lCpWQ7iXY9wpbtxXpgmzebEI2IRjADp6IrUKZ0/view#gid=422511051">PMD Info Spreadsheet</a>.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="def" max="255" value="2" width="4">Def<popup-info slot="details"> This should be the base Defense, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
+                <number-input name="def" max="255" value="2" width="4">Def<popup-info slot="details"> This should be the base Defense, <em>before</em> any temporary boosts from held items or exclusive items. For help with picking stats, see <a href="https://gamefaqs.gamespot.com/ds/955859-pokemon-mystery-dungeon-explorers-of-sky/faqs/77718">ZappedAmpharos's level-up tables</a>.</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Screech has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Screech has a multiplier effect separate from the normal stat stage. For suggested values, change the value to 0 and see the autocomplete options, or see the "Division Stage" table on the <a href="https://docs.google.com/spreadsheets/d/18utO_lCpWQ7iXY9wpbtxXpgmzebEI2IRjADp6IrUKZ0/view#gid=422511051">PMD Info Spreadsheet</a>.</popup-info></number-input>
             </div>
             <div>
-                <number-input name="sp_def" max="255" value="3" width="4">SpD<popup-info slot="details"> This should be the base Special Defense, <em>before</em> any temporary boosts from held items or exclusive items</popup-info></number-input>
+                <number-input name="sp_def" max="255" value="3" width="4">SpD<popup-info slot="details"> This should be the base Special Defense, <em>before</em> any temporary boosts from held items or exclusive items. For help with picking stats, see <a href="https://gamefaqs.gamespot.com/ds/955859-pokemon-mystery-dungeon-explorers-of-sky/faqs/77718">ZappedAmpharos's level-up tables</a>.</popup-info></number-input>
                 <number-input name="stat_modifiers.stages.sp_def" max="20" value="10" width="4">Stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
-                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Never used in-game, but in principle this multiplier is analogous to those for other stats.</popup-info></number-input>
+                <number-input name="stat_modifiers.multipliers.sp_def" max="8388607" value="1" step="0.001" width="4" list-options="1.0 0.5 0.25 0.125 0.063 0.031 0.016 0.008">Multiplier<popup-info slot="details" width="100"> Never used in-game, but in principle this multiplier is analogous to those for other stats. For suggested values, change the value to 0 and see the autocomplete options, or see the "Division Stage" table on the <a href="https://docs.google.com/spreadsheets/d/18utO_lCpWQ7iXY9wpbtxXpgmzebEI2IRjADp6IrUKZ0/view#gid=422511051">PMD Info Spreadsheet</a>.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="stat_modifiers.stages.accuracy" max="20" value="10">Accuracy stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
@@ -450,7 +450,7 @@
                 <number-input name="stat_modifiers.stages.evasion" max="20" value="10">Evasion stage<popup-info slot="details"> 0-20, 10 is normal</popup-info></number-input>
             </div>
             <div>
-                <number-input name="stat_modifiers.stages.speed" max="4" value="1">Speed stage<popup-info slot="details"> The speed multiplier (1x, 2x, 3x, 4x), with the exception of 0 which means half speed. A speed stage of 0 activates damage multipliers for Gyro Ball, Guts, and Marvel Scale.</popup-info></number-input>
+                <number-input name="stat_modifiers.stages.speed" max="4" value="1">Speed stage<popup-info slot="details"> The speed multiplier (1x, 2x, 3x, 4x), with the exception of 0 which means half speed. A speed stage of 0 activates multipliers for Gyro Ball, Guts, and Marvel Scale.</popup-info></number-input>
             </div>
             <div>
                 <number-input name="stat_modifiers.stages.stockpile" max="3">Stockpile stage<popup-info slot="details"> Number of times Stockpile has been used (0-3)</popup-info></number-input>
