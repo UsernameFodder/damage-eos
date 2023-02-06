@@ -126,7 +126,7 @@ bool MonsterEntity::has_negative_status(bool check_held_item) const {
            monster.statuses.gastro_acid || monster.statuses.whiffer ||
            (check_held_item && !monster.is_team_leader && item_active(eos::ITEM_Y_RAY_SPECS)) ||
            monster.statuses.cross_eyed || monster.statuses.miracle_eye ||
-           monster.statuses.exposed || monster.statuses.other_negative_status;
+           monster.statuses.exposed || speed_down || monster.statuses.other_negative_status;
 }
 // pmdsky-debug: GetMonsterGender ([NA] 0x20527A8)
 eos::monster_gender MonsterEntity::gender() const {
