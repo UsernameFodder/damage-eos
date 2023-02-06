@@ -1116,7 +1116,7 @@ bool move_hit_check(DungeonState& dungeon, const MonsterEntity& attacker,
     auto EVASION_MULTIPLIERS = (defender.gender() == eos::GENDER_FEMALE)
                                    ? mechanics::FEMALE_EVASION_STAGE_MULTIPLIERS
                                    : mechanics::MALE_EVASION_STAGE_MULTIPLIERS;
-    Fx32 evasion = EVASION_MULTIPLIERS[accuracy_stage];
+    Fx32 evasion = EVASION_MULTIPLIERS[evasion_stage];
     if (evasion < Fx32{0}) {
         evasion = Fx32{0};
     }
@@ -1124,7 +1124,7 @@ bool move_hit_check(DungeonState& dungeon, const MonsterEntity& attacker,
         evasion = Fx32{100};
     }
 
-    return dungeon.rng.roll_hit_chance(((move_accuracy * accuracy).trunc() * evasion).trunc(),
+    return dungeon.rng.roll_hit_chance(((move_accuracy * accuracy) * evasion).trunc(),
                                        use_second_accuracy);
 }
 

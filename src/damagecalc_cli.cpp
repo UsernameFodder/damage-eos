@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
             std::cout << "hit chance: guaranteed miss" << std::endl;
             return 0;
         }
-        std::cout << "hit chance: " << 100 * dungeon.rng.get_combined_hit_probability() << "%"
+        std::cout << "hit chance: " << dungeon.rng.get_combined_hit_percentage() << "%"
                   << std::endl;
         std::cout << "crit chance: " << dungeon.rng.get_computed_crit_chance() << "%" << std::endl;
 

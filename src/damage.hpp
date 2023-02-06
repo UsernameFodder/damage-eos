@@ -240,11 +240,12 @@ class MockDungeonRNG {
     }
     std::optional<int32_t> get_hit_chance1() const { return hit_chance1; }
     std::optional<int32_t> get_hit_chance2() const { return hit_chance2; }
-    double get_combined_hit_probability() const {
-        return (std::min(hit_chance1.value_or(100), 100) *
-                std::min(hit_chance2.value_or(100), 100) * (forewarn_active ? 80 : 100)) /
-               1e6;
+    int32_t get_combined_hit_chance_raw() const {
+        return std::min(hit_chance1.value_or(100), 100) * std::min(hit_chance2.value_or(100), 100) *
+               (forewarn_active ? 80 : 100);
     }
+    double get_combined_hit_probability() const { return get_combined_hit_chance_raw() / 1e6; }
+    double get_combined_hit_percentage() const { return get_combined_hit_chance_raw() / 1e4; }
 };
 
 // Stand-in for effects on the damage calculation caused by other monsters

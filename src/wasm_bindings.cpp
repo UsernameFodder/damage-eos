@@ -416,7 +416,7 @@ CalcDamageResult calc_damage(std::string config_str) {
             result.guaranteed_miss = true;
             return result;
         }
-        result.hit_chance = 100 * dungeon.rng.get_combined_hit_probability();
+        result.hit_chance = dungeon.rng.get_combined_hit_percentage();
         result.crit_chance = dungeon.rng.get_computed_crit_chance();
 
         const auto& calc = dungeon.damage_calc;
@@ -506,7 +506,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
         .field("accuracy1", &js::MoveDetails::accuracy1)
         .field("accuracy2", &js::MoveDetails::accuracy2)
         .field("strikes", &js::MoveDetails::strikes)
-        .field("crit_chance", &js::MoveDetails::crit_chance)
+        .field("critChance", &js::MoveDetails::crit_chance)
         .field("unsupported", &js::MoveDetails::unsupported)
         .field("specialNotes", &js::MoveDetails::special_notes);
 
