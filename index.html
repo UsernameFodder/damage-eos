@@ -99,7 +99,7 @@
         <template id="calc-output">
             <div>Damage: <strong><span class="calc-min-damage">0</span> - <span class="calc-max-damage">0</span><span class="calc-healed"></span></strong></div>
             <div>Hit chance: <strong><span class="calc-hit-chance">0</span>%</strong></div>
-            <div>Crit chance: <strong><span class="calc-crit-chance">0</span>%</strong></div>
+            <div>Crit chance<popup-info> The computed chance passed to the RNG for the critical hit roll. The "No critical hits" exclusive item effect is applied <em>after</em> the critical hit roll, and has no effect on this value.</popup-info>: <strong><span class="calc-crit-chance">0</span>%</strong></div>
             <details class="calc-result-details">
                 <summary>Result details<popup-info> These are direct outputs from the game's damage calculation function</popup-info></summary>
                 <table>
@@ -487,8 +487,8 @@
             <div>
                 <number-input name="exclusive_items.stat_boosts.sp_def" max="255">Exclusive item SpD boost<popup-info slot="details"> Only applies to team members</popup-info></number-input>
             </div>
-            <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Special effects from exclusive items besides ordinary stat boosts. Any exclusive item effect not listed here either has no effect on the damage calculation, or is unsupported.</popup-info></checkbox-list-input>
-            <checkbox-list-input name="statuses">Statuses<popup-info slot="details"> Any status not listed here either has no effect on the damage calculation, or is unsupported</popup-info></checkbox-list-input>
+            <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Only applies to team members. Special effects from exclusive items besides ordinary stat boosts. Any exclusive item effect not listed here either has no effect on the damage calculation, or is unsupported.</popup-info></checkbox-list-input>
+            <checkbox-list-input name="statuses">Statuses<popup-info slot="details"> Any status not listed here either has no effect on the damage calculation, is part of the Guts/Marvel Scale catch-all status with no other effect, or is unsupported</popup-info></checkbox-list-input>
             <div>
                 <checkbox-input name="boosted_attacks">Boosted attacks<popup-info slot="details"> This applies a 1.5x multiplier on damage dealt by this Pokémon. It's uncertain when this flag is set...maybe for angry Kecleon shopkeepers?</popup-info></checkbox-input>
             </div>
