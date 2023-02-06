@@ -26,7 +26,7 @@ Fx32 json_get_fx32(const json& obj, const std::string name, double default_val =
 DungeonState parse_dungeon_cfg(const json& dungeon_obj, const json& rng_obj) {
     DungeonState dungeon = {};
 
-    if (dungeon_obj.find("weather") != dungeon_obj.end()) {
+    if (dungeon_obj.contains("weather")) {
         dungeon.weather = ids::WEATHER[dungeon_obj.at("weather").get<std::string>()];
     }
     dungeon.mud_sport_turns = dungeon_obj.value("mud_sport", false) ? 1 : 0;
@@ -73,6 +73,19 @@ MonsterEntity parse_monster_cfg(const json& monster_obj) {
     monster.types[1] = mdata.types[1];
     monster.abilities[0] = mdata.abilities[0];
     monster.abilities[1] = mdata.abilities[1];
+    // Overrides
+    if (monster_obj.contains("type1")) {
+        monster.types[0] = ids::TYPE[monster_obj.at("type1").get<std::string>()];
+    }
+    if (monster_obj.contains("type2")) {
+        monster.types[1] = ids::TYPE[monster_obj.at("type2").get<std::string>()];
+    }
+    if (monster_obj.contains("ability1")) {
+        monster.abilities[0] = ids::ABILITY[monster_obj.at("ability1").get<std::string>()];
+    }
+    if (monster_obj.contains("ability2")) {
+        monster.abilities[1] = ids::ABILITY[monster_obj.at("ability2").get<std::string>()];
+    }
 
     monster.is_not_team_member = !monster_obj.value("is_team_member", false);
     monster.is_team_leader = monster_obj.value("is_team_leader", false);
@@ -110,13 +123,13 @@ MonsterEntity parse_monster_cfg(const json& monster_obj) {
 
     monster.hidden_power_base_power =
         json_get_int<int16_t>(monster_obj, "hidden_power_base_power", 1);
-    if (monster_obj.find("hidden_power_type") != monster_obj.end()) {
+    if (monster_obj.contains("hidden_power_type")) {
         monster.hidden_power_type =
             ids::TYPE[monster_obj.at("hidden_power_type").get<std::string>()];
     }
 
     const json& held_item = monster_obj.value("held_item", json({}));
-    if (held_item.find("id") != held_item.end()) {
+    if (held_item.contains("id")) {
         monster.held_item.id = ids::ITEM[held_item.at("id").get<std::string>()];
         if (monster.held_item.id != eos::ITEM_NOTHING) {
             monster.held_item.exists = true;

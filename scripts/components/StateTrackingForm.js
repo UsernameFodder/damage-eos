@@ -18,6 +18,8 @@ class StateTrackingForm extends InputStateTracker {
         );
     }
     inputs() {
+        // controlled-select-list-input isn't here by default since it's a composite element with
+        // select-input children in the light DOM; override inputs() if it's needed
         return this.querySelectorAll("checkbox-input, checkbox-list-input, number-input, select-input");
     }
     transformId(id) {
@@ -70,6 +72,14 @@ class StateTrackingForm extends InputStateTracker {
             }
             currentObj = currentObj[field];
         }
+
+        if (value === null) {
+            // Interpret null to mean delete the property
+            const hadProperty = Object.hasOwn(currentObj, innerField);
+            delete currentObj[innerField];
+            return changed || hadProperty;
+        }
+
         let oldValue = currentObj[innerField];
         currentObj[innerField] = value;
         if (Array.isArray(value)) {

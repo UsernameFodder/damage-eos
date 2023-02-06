@@ -181,6 +181,22 @@ TEST_CASE("Monster object is parsed correctly") {
     REQUIRE(monster.anger_point_flag);
     REQUIRE(monster.n_moves_out_of_pp == 4);
 }
+TEST_CASE("Monster object type and ability overrides work") {
+    auto monster = parse_monster_cfg({
+                                         {"species", "bronzong"},
+                                         {"type1", "fire"},
+                                         {"type2", "none"},
+                                         {"ability1", "blaze"},
+                                         {"ability2", "pressure"},
+                                     })
+                       .monster;
+
+    REQUIRE(monster.apparent_id == eos::MONSTER_BRONZONG);
+    REQUIRE(monster.types[0] == eos::TYPE_FIRE);
+    REQUIRE(monster.types[1] == eos::TYPE_NONE);
+    REQUIRE(monster.abilities[0] == eos::ABILITY_BLAZE);
+    REQUIRE(monster.abilities[1] == eos::ABILITY_PRESSURE);
+}
 
 std::pair<Move, int32_t> parse_move_cfg(const json&);
 TEST_CASE("Move object is parsed correctly") {

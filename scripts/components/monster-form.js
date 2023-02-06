@@ -2,6 +2,7 @@
 
 import "./base/checkbox-input.js"
 import "./base/checkbox-list-input.js"
+import "./base/controlled-select-list-input.js"
 import "./base/select-input.js"
 import "./species-input.js"
 import "./species-output.js"
@@ -14,6 +15,10 @@ class MonsterForm extends StateTrackingForm {
 
         const monsterInput = this.querySelector(`#${this.transformId("monster-form-species-input")}`);
         monsterInput.populateOptions(damagecalc.getSpecies(), " (secondary)");
+        const overrideTypesInput = this.querySelector(".override-types-input");
+        overrideTypesInput.populateOptions(damagecalc.getTypes());
+        const overrideAbilitiesInput = this.querySelector(".override-abilities-input");
+        overrideAbilitiesInput.populateOptions(damagecalc.getAbilities());
         const hiddenPowerTypeInput = this.querySelector("select-input[name='hidden_power_type']");
         hiddenPowerTypeInput.populateOptions(damagecalc.getTypes());
         const heldItemInput = this.querySelector("select-input[name='held_item.id']");
@@ -34,7 +39,8 @@ class MonsterForm extends StateTrackingForm {
     inputs() {
         const defaultInputs = Array.from(super.inputs());
         // Include species-input and exclude any of its children, since it controls its own inputs
-        const compositeInputs = Array.from(this.querySelectorAll("species-input"));
+        // Similarly for controlled-select-list-input elements
+        const compositeInputs = Array.from(this.querySelectorAll("species-input, controlled-select-list-input"));
         return compositeInputs.concat(defaultInputs.filter(input =>
             compositeInputs.every(composite => !composite.contains(input))
         ));

@@ -11,7 +11,7 @@ h1, h2 {
     user-select: none;
     color: gray;
 }
-.widget div, .widget checkbox-list-input {
+.widget div, .widget checkbox-list-input, .widget controlled-select-list-input {
     margin: 0.7ex 0;
 }
 
@@ -130,8 +130,12 @@ move-output .unsupported {
 
 monster-form species-input {
     float: left;
+}
+monster-form species-input, monster-form controlled-select-list-input {
     width: 45%;
-    margin-bottom: 2ex;
+}
+monster-form controlled-select-list-input.override-abilities-input {
+    margin-bottom: 3ex;
 }
 monster-form species-output {
     float: right;

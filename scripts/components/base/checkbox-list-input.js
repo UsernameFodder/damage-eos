@@ -1,4 +1,4 @@
-// Attributes: name
+// Attributes: name, width
 // Slots: label (unnamed), details
 
 import "./checkbox-input.js"

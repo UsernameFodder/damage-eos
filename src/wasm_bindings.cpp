@@ -56,6 +56,37 @@ std::vector<std::string> get_species() {
     return ids::MONSTER.all_except({eos::MONSTER_NONE, eos::MONSTER_NONE_SECONDARY});
 }
 std::vector<std::string> get_types() { return ids::TYPE.all_except({eos::TYPE_NEUTRAL}); }
+std::vector<std::string> get_abilities() {
+    // Only a couple abilities are actually used anywhere; only return these
+    return {
+        ids::ABILITY[eos::ABILITY_UNKNOWN],      ids::ABILITY[eos::ABILITY_THICK_FAT],
+        ids::ABILITY[eos::ABILITY_INTIMIDATE],   ids::ABILITY[eos::ABILITY_BATTLE_ARMOR],
+        ids::ABILITY[eos::ABILITY_TORRENT],      ids::ABILITY[eos::ABILITY_GUTS],
+        ids::ABILITY[eos::ABILITY_SHELL_ARMOR],  ids::ABILITY[eos::ABILITY_OVERGROW],
+        ids::ABILITY[eos::ABILITY_SAND_VEIL],    ids::ABILITY[eos::ABILITY_HUGE_POWER],
+        ids::ABILITY[eos::ABILITY_VOLT_ABSORB],  ids::ABILITY[eos::ABILITY_WATER_ABSORB],
+        ids::ABILITY[eos::ABILITY_HUSTLE],       ids::ABILITY[eos::ABILITY_LIGHTNINGROD],
+        ids::ABILITY[eos::ABILITY_COMPOUNDEYES], ids::ABILITY[eos::ABILITY_MARVEL_SCALE],
+        ids::ABILITY[eos::ABILITY_WONDER_GUARD], ids::ABILITY[eos::ABILITY_LEVITATE],
+        ids::ABILITY[eos::ABILITY_PLUS],         ids::ABILITY[eos::ABILITY_SOUNDPROOF],
+        ids::ABILITY[eos::ABILITY_MINUS],        ids::ABILITY[eos::ABILITY_SWARM],
+        ids::ABILITY[eos::ABILITY_BLAZE],        ids::ABILITY[eos::ABILITY_FLASH_FIRE],
+        ids::ABILITY[eos::ABILITY_PURE_POWER],   ids::ABILITY[eos::ABILITY_ANGER_POINT],
+        ids::ABILITY[eos::ABILITY_TINTED_LENS],  ids::ABILITY[eos::ABILITY_MOLD_BREAKER],
+        ids::ABILITY[eos::ABILITY_DRY_SKIN],     ids::ABILITY[eos::ABILITY_SCRAPPY],
+        ids::ABILITY[eos::ABILITY_SUPER_LUCK],   ids::ABILITY[eos::ABILITY_SOLAR_POWER],
+        ids::ABILITY[eos::ABILITY_RECKLESS],     ids::ABILITY[eos::ABILITY_SNIPER],
+        ids::ABILITY[eos::ABILITY_HEATPROOF],    ids::ABILITY[eos::ABILITY_DOWNLOAD],
+        ids::ABILITY[eos::ABILITY_TANGLED_FEET], ids::ABILITY[eos::ABILITY_ADAPTABILITY],
+        ids::ABILITY[eos::ABILITY_TECHNICIAN],   ids::ABILITY[eos::ABILITY_IRON_FIST],
+        ids::ABILITY[eos::ABILITY_MOTOR_DRIVE],  ids::ABILITY[eos::ABILITY_UNAWARE],
+        ids::ABILITY[eos::ABILITY_RIVALRY],      ids::ABILITY[eos::ABILITY_NO_GUARD],
+        ids::ABILITY[eos::ABILITY_NORMALIZE],    ids::ABILITY[eos::ABILITY_SOLID_ROCK],
+        ids::ABILITY[eos::ABILITY_FILTER],       ids::ABILITY[eos::ABILITY_KLUTZ],
+        ids::ABILITY[eos::ABILITY_FLOWER_GIFT],  ids::ABILITY[eos::ABILITY_SNOW_CLOAK],
+        ids::ABILITY[eos::ABILITY_FOREWARN],     ids::ABILITY[eos::ABILITY_STORM_DRAIN],
+    };
+}
 std::vector<std::string> get_held_items() {
     // Only a couple held items are actually used anywhere; only return these
     return {
@@ -560,6 +591,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
     function("getMoves", &js::get_moves);
     function("getSpecies", &js::get_species);
     function("getTypes", &js::get_types);
+    function("getAbilities", &js::get_abilities);
     function("getHeldItems", &js::get_held_items);
     function("getWeatherTypes", &js::get_weather_types);
     function("getIqSkills", &js::get_iq_skills);

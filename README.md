@@ -45,8 +45,10 @@ Where relevant, the config file works with names rather than internal IDs. For e
 - You can use the `"guts/marvel scale"` status to indicate any status that would activate Guts or Marvel Scale.
 - You can use the following item names in place of a move to indicate a thrown item: `"stick"`, `"iron thorn"`, `"silver spike"`, `"gold fang"`, `"cacnea spike"`, `"corsola twig"`, `"gold thorn"`.
 
+### Type and Ability Overrides
+The following properties can optionally be specified within the attacker and defender objects: `"type1"`, `"type2"`, `"ability1"`, `"ability2"`. If present, these values will override the normal values determined based on the `"species"` field.
+
 ## Not Yet Implemented
 - Some special-case moves with unique handling
   - One notable group is all moves using the "fixed damage" routines. This includes moves that are not actually _fixed_ damage, but are implemented using these routines. For example, Psywave.
-- Overrides for species types and abilities for scenarios like Skill Swap.
 - Probably other things I'm forgetting
