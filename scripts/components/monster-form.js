@@ -18,7 +18,7 @@ class MonsterForm extends StateTrackingForm {
         const overrideTypesInput = this.querySelector(".override-types-input");
         overrideTypesInput.populateOptions(damagecalc.getTypes());
         const overrideAbilitiesInput = this.querySelector(".override-abilities-input");
-        overrideAbilitiesInput.populateOptions(damagecalc.getAbilities());
+        overrideAbilitiesInput.populateOptions(MonsterForm.getAbilities());
         const hiddenPowerTypeInput = this.querySelector("select-input[name='hidden_power_type']");
         hiddenPowerTypeInput.populateOptions(damagecalc.getTypes());
         const heldItemInput = this.querySelector("select-input[name='held_item.id']");
@@ -55,6 +55,30 @@ class MonsterForm extends StateTrackingForm {
         return compositeInputs.concat(defaultInputs.filter(input =>
             compositeInputs.every(composite => !composite.contains(input))
         ));
+    }
+    static getAbilities() {
+        const abilities = damagecalc.getAbilities();
+        const firstAbility = abilities[0]; // "Unknown"
+        const alphabetizeWithExceptions = (a, b) => {
+            // Keep "Unknown" as the first item
+            if (a === firstAbility) {
+                return -1;
+            } else if (b === firstAbility) {
+                return 1;
+            }
+            // Otherwise, compare strings case-insensitively to alphabetize the array
+            const aLower = a.toLowerCase();
+            const bLower = b.toLowerCase();
+            if (aLower < bLower) {
+                return -1;
+            } else if (bLower < aLower) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        abilities.sort(alphabetizeWithExceptions);
+        return abilities;
     }
     static getIqSkills() {
         return damagecalc.getIqSkills().map((iq) => ({name: iq, label: iq}));

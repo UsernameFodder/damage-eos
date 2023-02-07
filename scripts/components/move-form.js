@@ -54,7 +54,7 @@ class MoveForm extends StateTrackingForm {
                 return 0;
             }
         }
-        supported.sort(alphabetizeWithExceptions)
+        supported.sort(alphabetizeWithExceptions);
         unsupported.sort(alphabetizeWithExceptions);
         return [
             {group: "Normal Moves", options: supported},
