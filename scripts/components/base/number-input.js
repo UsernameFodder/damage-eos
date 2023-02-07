@@ -91,6 +91,11 @@ class NumberInput extends HTMLElement {
         }
         return null;
     }
+    setValue(value) {
+        this.inputElement.value = value;
+        // trigger any callbacks
+        this.inputElement.dispatchEvent(new Event("input"));
+    }
 
     registerCallback(valueCallback) {
         const inputValue = this.getInputValue();

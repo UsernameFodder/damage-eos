@@ -40,6 +40,9 @@ class SpeciesInput extends StateTrackingForm {
         }
         return species;
     }
+    baseSpecies() {
+        return this.state.species;
+    }
 
     populateOptions(options, secondarySuffix) {
         const primary = options.filter(opt => !opt.endsWith(secondarySuffix));

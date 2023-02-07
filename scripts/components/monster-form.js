@@ -13,8 +13,8 @@ class MonsterForm extends StateTrackingForm {
     connectedCallback() {
         super.connectedCallback();
 
-        const monsterInput = this.querySelector(`#${this.transformId("monster-form-species-input")}`);
-        monsterInput.populateOptions(damagecalc.getSpecies(), " (secondary)");
+        this.monsterInput = this.querySelector(`#${this.transformId("monster-form-species-input")}`);
+        this.monsterInput.populateOptions(damagecalc.getSpecies(), " (secondary)");
         const overrideTypesInput = this.querySelector(".override-types-input");
         overrideTypesInput.populateOptions(damagecalc.getTypes());
         const overrideAbilitiesInput = this.querySelector(".override-abilities-input");
@@ -35,6 +35,17 @@ class MonsterForm extends StateTrackingForm {
             const teamMemberInput = this.querySelector("checkbox-input[name='is_team_member']");
             teamMemberInput.setChecked(true);
         }
+
+        this.statPresetMessage = this.querySelector(".stat-preset-message");
+        this.statPresetMessageTimeoutID = null;
+        this.hpInput = this.querySelector("number-input[name='hp']");
+        this.maxHpInput = this.querySelector("number-input[name='max_hp']");
+        this.atkInput = this.querySelector("number-input[name='atk']");
+        this.spAtkInput = this.querySelector("number-input[name='sp_atk']");
+        this.defInput = this.querySelector("number-input[name='def']");
+        this.spDefInput = this.querySelector("number-input[name='sp_def']");
+        const statPresetButton = this.querySelector("button.stat-preset-button");
+        statPresetButton.onclick = this.fetchStatPreset.bind(this);
     }
     inputs() {
         const defaultInputs = Array.from(super.inputs());
@@ -77,6 +88,85 @@ class MonsterForm extends StateTrackingForm {
 
     formTemplate() {
         return "monster-form";
+    }
+
+    fetchStatPreset() {
+        let message = "";
+        const species = this.monsterInput.baseSpecies();
+        let level = this.state.level
+        if (level < 1) {
+            level = 1;
+            message = "Using level 1 stats";
+        } else if (level > 100) {
+            level = 100;
+            message = "Using level 100 stats";
+        }
+        fetch(this.statPresetDataURI(species))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Could not fetch level-up stats for ${species} [code ${response.status}]`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.reportStatPresetMessage(message);
+                this.applyStatPreset(data[level - 1]);
+            })
+            .catch(error => this.reportStatPresetMessage(error));
+    }
+    statPresetDataURI(species) {
+        // Deal with forms
+        if (species.includes("Unown")) {
+            species = "Unown";
+        } else if (species.includes("Celebi")) {
+            species = "Celebi";
+        } else if (species.includes("Castform")) {
+            species = "Castform";
+        } else if (species.includes("Kecleon")) {
+            species = "Kecleon";
+        } else if (species.includes("Deoxys")) {
+            species = "Deoxys";
+        } else if (species.includes("Burmy")) {
+            species = "Burmy";
+        } else if (species.includes("Wormadam")) {
+            species = "Wormadam";
+        } else if (species.includes("Cherrim")) {
+            species = "Cherrim";
+        } else if (species.includes("Shellos")) {
+            species = "Shellos";
+        } else if (species.includes("Gastrodon")) {
+            species = "Gastrodon";
+        } else if (species.includes("Dialga")) {
+            species = "Dialga";
+        } else if (species.includes("Giratina")) {
+            species = "Giratina";
+        } else if (species.includes("Shaymin")) {
+            species = "Shaymin";
+        } else if (species.includes("Arceus")) {
+            species = "Arceus";
+        }
+        return encodeURIComponent(`levelup-stats/${species}.json`);
+    }
+    applyStatPreset(preset) {
+        this.hpInput.setValue(preset.hp);
+        this.maxHpInput.setValue(preset.hp);
+        this.atkInput.setValue(preset.atk);
+        this.spAtkInput.setValue(preset.spa);
+        this.defInput.setValue(preset.def);
+        this.spDefInput.setValue(preset.spd);
+    }
+    reportStatPresetMessage(message) {
+        this.setStatPresetMessage(message);
+        if (message !== "") {
+            this.statPresetMessageTimeoutID = setTimeout(this.setStatPresetMessage.bind(this), 5000);
+        }
+    }
+    setStatPresetMessage(newMessage) {
+        if (this.statPresetMessageTimeoutID !== null) {
+            clearTimeout(this.statPresetMessageTimeoutID);
+            this.statPresetMessageTimeoutID = null;
+        }
+        this.statPresetMessage.innerText = newMessage ?? "";
     }
 }
 

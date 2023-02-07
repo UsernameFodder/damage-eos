@@ -157,6 +157,10 @@ monster-form tbody th {
 .monster-box[name="defender"] {
     background-color: skyblue;
 }
+.stat-preset-message {
+    color: red;
+    background-color: white;
+}
 
 
 /* Loading overlay */
