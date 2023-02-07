@@ -97,7 +97,7 @@
         </template>
 
         <template id="calc-output">
-            <div>Damage: <strong><span class="calc-min-damage">0</span> - <span class="calc-max-damage">0</span><span class="calc-healed"></span></strong></div>
+            <div>Damage: <strong><span class="calc-min-damage">0</span> - <span class="calc-max-damage">0</span> (avg. <span class="calc-avg-damage"></span>)<span class="calc-healed"></span></strong></div>
             <div>Hit chance: <strong><span class="calc-hit-chance">0</span>%</strong></div>
             <div>Crit chance<popup-info> The computed chance passed to the RNG for the critical hit roll. The "No critical hits" exclusive item effect is applied <em>after</em> the critical hit roll, and has no effect on this value.</popup-info>: <strong><span class="calc-crit-chance">0</span>%</strong></div>
             <details class="calc-result-details">
@@ -544,7 +544,7 @@
                 <checkbox-input name="iq_disabled">IQ disabled<popup-info slot="details"> Dungeon condition where all IQ skill effects are disabled</popup-info></checkbox-input>
             </div>
             <div>
-                <checkbox-input name="substitute_room">Substitute room<popup-info slot="details"> The substitute room (fixed room ID 110) is a special fixed room layout where damage from enemies is <em>not</em> decreased by factor of 85/64 like usual</popup-info></checkbox-input>
+                <checkbox-input name="substitute_room">Explorer Maze<popup-info slot="details"> The Explorer Maze (fixed room ID 110) is a dungeon in the Marowak Dojo where you can battle another player's team sent over wireless communications. Damage from enemies here is <em>not</em> decreased by a factor of 85/64 like usual.</popup-info></checkbox-input>
             </div>
             <checkbox-list-input name="other_monsters.iq">IQ skills (other Pokémon)<popup-info slot="details"> Special IQ skills that affect other Pokémon on the floor</popup-info></checkbox-list-input>
             <checkbox-list-input name="other_monsters.abilities">Abilities (other Pokémon)<popup-info slot="details"> Special abilities that affect other Pokémon on the floor</popup-info></checkbox-list-input>
