@@ -47,7 +47,7 @@ jobs:
       - name: Install distribution package
         run: |
           mkdir -p ${{ env.RELEASE_DIR }}
-          cp -r scripts index.html style.css favicon.ico ${{ env.RELEASE_DIR }}
+          cp -r scripts index.html style.css levelup-stats favicon.ico ${{ env.RELEASE_DIR }}
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
