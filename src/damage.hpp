@@ -90,7 +90,7 @@ struct DamageCalcDiag {
     // calculation. "Static" in the sense that this part of the multiplier doesn't depend on
     // variables like type-based effects, critical hits, and Reflect/Light Screen. Factors in
     // the static damage multiplier include the argument to CalcDamage, the multiplier due to
-    // monster::boosted_attacks, Reckless, and Iron Fist.
+    // monster::me_first_flag, Reckless, and Iron Fist.
     Fx32 static_damage_mult = 0;
     // The net number of attack boosts to an attacker due to a Power Band or Munch Belt.
     // It seems like there's a bug in the code; aura bows do not contribute to this field.
@@ -432,7 +432,8 @@ struct Monster {
     // Stat boosts from exclusive items
     uint8_t exclusive_item_offense_boosts[2] = {0, 0}; // {atk, sp_atk}
     uint8_t exclusive_item_defense_boosts[2] = {0, 0}; // {def, sp_def}
-    bool boosted_attacks = false;
+    // Set if the current move being used was copied by Me First
+    bool me_first_flag = false;
     // Set after the monster attacks (true if the attack missed, false otherwise). If true
     // when the monster attacks, Practice Swinger will activate.
     bool practice_swinger_flag = false;

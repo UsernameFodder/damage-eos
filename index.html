@@ -182,7 +182,7 @@
                             <td class="details-base"></td>
                         </tr>
                         <tr>
-                            <th>Static multiplier<popup-info> The "static" part of the multiplier applied to the base damage, not counting an additional random multiplier applied later. This includes things like move-specific multipliers, Reckless, and Iron Fist. Things like STAB, type-advantage multipliers, etc. are part of a "dynamic" multiplier that isn't included here.</popup-info></th>
+                            <th>Static multiplier<popup-info> The "static" part of the multiplier applied to the base damage, not counting an additional random multiplier applied later. This includes things like move-specific multipliers, Me First, Reckless, and Iron Fist. Things like STAB, type-advantage multipliers, etc. are part of a "dynamic" multiplier that isn't included here.</popup-info></th>
                             <td class="details-static-mult"></td>
                         </tr>
                         <tr>
@@ -493,7 +493,7 @@
             <checkbox-list-input name="exclusive_items.effects">Exclusive item effects<popup-info slot="details"> Only applies to team members. Special effects from exclusive items besides ordinary stat boosts. Any exclusive item effect not listed here either has no effect on the damage calculation, or is unsupported.</popup-info></checkbox-list-input>
             <checkbox-list-input name="statuses">Statuses<popup-info slot="details"> Any status not listed here either has no effect on the damage calculation, is part of the Guts/Marvel Scale catch-all status with no other effect, or is unsupported</popup-info></checkbox-list-input>
             <div>
-                <checkbox-input name="boosted_attacks">Boosted attacks<popup-info slot="details"> This applies a 1.5x multiplier on damage dealt by this Pokémon. It's uncertain when this flag is set...maybe for angry Kecleon shopkeepers?</popup-info></checkbox-input>
+                <checkbox-input name="me_first">Me First<popup-info slot="details"> This applies a 1.5x multiplier on damage dealt by this Pokémon. This flag is set when a move is copied by Me First.</popup-info></checkbox-input>
             </div>
             <div>
                 <checkbox-input name="practice_swinger">Last move missed<popup-info slot="details"> Activates the Practice Swinger IQ skill if the attacker has it</popup-info></checkbox-input>

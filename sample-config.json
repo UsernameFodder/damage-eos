@@ -55,7 +55,7 @@
             }
         },
         "statuses": ["exposed"],
-        "boosted_attacks": false,
+        "me_first": false,
         "practice_swinger": false,
         "anger_point": false,
         "n_moves_out_of_pp": 0
@@ -109,7 +109,7 @@
             }
         },
         "statuses": ["guts/marvel scale"],
-        "boosted_attacks": false,
+        "me_first": false,
         "practice_swinger": false,
         "anger_point": false,
         "n_moves_out_of_pp": 0

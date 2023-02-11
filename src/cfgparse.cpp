@@ -116,7 +116,7 @@ MonsterEntity parse_monster_cfg(const json& monster_obj) {
     monster.stat_modifiers.defensive_multipliers[1] = json_get_fx32(multipliers, "sp_def", 1);
     monster.stat_modifiers.flash_fire_boost =
         json_get_int<int16_t>(stat_modifiers, "flash_fire_boost");
-    monster.boosted_attacks = monster_obj.value("boosted_attacks", false);
+    monster.me_first_flag = monster_obj.value("me_first", false);
     monster.practice_swinger_flag = monster_obj.value("practice_swinger", false);
     monster.anger_point_flag = monster_obj.value("anger_point", false);
     monster.n_moves_out_of_pp = json_get_int<uint8_t>(monster_obj, "n_moves_out_of_pp");

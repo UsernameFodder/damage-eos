@@ -476,8 +476,8 @@ void calc_damage(DungeonState& dungeon, const MonsterEntity& attacker, MonsterEn
 
 {
     damage_out = DamageData{};
-    if (attacker.monster.boosted_attacks) {
-        damage_mult *= mechanics::MONSTER_BOOSTED_ATTACKS_MULTIPLIER;
+    if (attacker.monster.me_first_flag) {
+        damage_mult *= mechanics::ME_FIRST_MULTIPLIER;
     }
 
     if (attacker.ability_active(eos::ABILITY_RECKLESS) && mechanics::is_recoil_move(move_id)) {

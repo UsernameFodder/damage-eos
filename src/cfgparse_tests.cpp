@@ -125,7 +125,7 @@ TEST_CASE("Monster object is parsed correctly") {
                                     }},
                                }},
                               {"statuses", {"burn", "guts/marvel scale"}},
-                              {"boosted_attacks", true},
+                              {"me_first", true},
                               {"practice_swinger", true},
                               {"anger_point", true},
                               {"n_moves_out_of_pp", 4},
@@ -176,7 +176,7 @@ TEST_CASE("Monster object is parsed correctly") {
     REQUIRE(monster.exclusive_item_defense_boosts[1] == 14);
     REQUIRE(monster.statuses.burn);
     REQUIRE(monster.statuses.other_negative_status);
-    REQUIRE(monster.boosted_attacks);
+    REQUIRE(monster.me_first_flag);
     REQUIRE(monster.practice_swinger_flag);
     REQUIRE(monster.anger_point_flag);
     REQUIRE(monster.n_moves_out_of_pp == 4);
