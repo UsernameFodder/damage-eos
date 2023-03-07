@@ -1504,7 +1504,7 @@ int32_t simulate_damage_calc(DamageData& damage_data, DungeonState& dungeon,
         break;
     }
     case eos::MOVE_BRINE: {
-        int32_t max_hp = defender.monster.max_hp_stat = defender.monster.max_hp_boost;
+        int32_t max_hp = defender.monster.max_hp_stat + defender.monster.max_hp_boost;
         if (max_hp > mechanics::MAX_HP_CAP) {
             max_hp = mechanics::MAX_HP_CAP;
         }
