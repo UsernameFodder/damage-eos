@@ -71,7 +71,8 @@ class CalcOutput extends HTMLElement {
             // is equivalent to the average
             [".calc-avg-damage", result.details.calc.damageCalc],
             [".calc-healed", result.healed ? " (healed)" : ""],
-            [".calc-hit-chance", result.guaranteedMiss ? "guaranteed miss" : result.hitChance],
+            [".calc-hit-chance", result.guaranteedMiss ? 0 : result.hitChance],
+            [".calc-guaranteed-miss", result.guaranteedMiss ? " (guaranteed miss)" : ""],
             [".calc-crit-chance", result.guaranteedMiss ? 0 : result.critChance],
         ]);
         const resultDetails = this.querySelector(".calc-result-details");
