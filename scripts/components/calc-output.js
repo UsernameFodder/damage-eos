@@ -67,9 +67,7 @@ class CalcOutput extends HTMLElement {
         this.setData([
             [".calc-min-damage", result.minDamage],
             [".calc-max-damage", result.maxDamage],
-            // Since random variation is symmetric, the pre-variance damage calc
-            // is equivalent to the average
-            [".calc-avg-damage", result.details.calc.damageCalc],
+            [".calc-avg-damage", result.avgDamage],
             [".calc-healed", result.healed ? " (healed)" : ""],
             [".calc-hit-chance", result.guaranteedMiss ? 0 : result.hitChance],
             [".calc-guaranteed-miss", result.guaranteedMiss ? " (guaranteed miss)" : ""],

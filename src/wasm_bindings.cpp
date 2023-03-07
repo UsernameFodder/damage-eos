@@ -354,6 +354,7 @@ struct CalcDetails {
     int damage_calc_base = 0;
     double static_damage_mult = 0;
     int damage_calc = 0;
+    int avg_random_damage_mult_pct = 0;
     int min_random_damage_mult_pct = 0;
     int max_random_damage_mult_pct = 0;
     ModifierDetails modifiers = {};
@@ -371,6 +372,7 @@ struct ResultDetails {
     CalcDetails calc = {};
 };
 struct CalcDamageResult {
+    int avg_damage = 0;
     int min_damage = 0;
     int max_damage = 0;
     bool healed = false;
@@ -385,36 +387,49 @@ CalcDamageResult calc_damage(std::string config_str) {
         auto [dungeon, attacker, defender, move, attack_power] = parse_cfg(cfg);
         auto move_spec = mechanics::MoveSpec(move.id);
 
-        // Copy for a second damage calc since the inputs can be modified by the simulation
+        // Copy for other damage calcs since the inputs can be modified by the simulation
+        DungeonState dungeon_min = dungeon;
         DungeonState dungeon_max = dungeon;
+        MonsterEntity attacker_min = attacker;
+        MonsterEntity defender_min = defender;
         MonsterEntity attacker_max = attacker;
         MonsterEntity defender_max = defender;
+        Move move_min = move;
         Move move_max = move;
-        dungeon.rng.variance_dial = 0;     // minimum damage roll
+        dungeon.rng.variance_dial = 0.5;   // average damage roll
+        dungeon_min.rng.variance_dial = 0; // minimum damage roll
         dungeon_max.rng.variance_dial = 1; // maximum damage roll
 
         DamageData details = {};
+        DamageData details_min_var = {};
         DamageData details_max_var = {};
         int32_t damage = 0;
+        int32_t damage_min_var = 0;
         int32_t damage_max_var = 0;
 
         if (move.id == eos::MOVE_PROJECTILE) {
             damage =
                 simulate_damage_calc_projectile(details, dungeon, attacker, defender, attack_power);
+            damage_min_var = simulate_damage_calc_projectile(
+                details_min_var, dungeon_min, attacker_min, defender_min, attack_power);
             damage_max_var = simulate_damage_calc_projectile(
                 details_max_var, dungeon_max, attacker_max, defender_max, attack_power);
         } else {
             damage = simulate_damage_calc(details, dungeon, attacker, defender, move);
+            damage_min_var = simulate_damage_calc(details_min_var, dungeon_min, attacker_min,
+                                                  defender_min, move_min);
             damage_max_var = simulate_damage_calc(details_max_var, dungeon_max, attacker_max,
                                                   defender_max, move_max);
         }
 
         CalcDamageResult result = {};
         if (details.healed) {
-            result.min_damage = details.damage;
+            result.avg_damage = details.damage;
+            result.min_damage = details_min_var.damage;
             result.max_damage = details_max_var.damage;
         } else {
-            result.min_damage = damage;
+            result.avg_damage = damage;
+            result.min_damage = damage_min_var;
             result.max_damage = damage_max_var;
         }
         result.healed = details.healed;
@@ -453,7 +468,9 @@ CalcDamageResult calc_damage(std::string config_str) {
         calc_details.damage_calc_base = calc.damage_calc_base;
         calc_details.static_damage_mult = calc.static_damage_mult.val();
         calc_details.damage_calc = calc.damage_calc;
-        calc_details.min_random_damage_mult_pct = calc.damage_calc_random_mult_pct;
+        calc_details.avg_random_damage_mult_pct = calc.damage_calc_random_mult_pct;
+        calc_details.min_random_damage_mult_pct =
+            dungeon_min.damage_calc.damage_calc_random_mult_pct;
         calc_details.max_random_damage_mult_pct =
             dungeon_max.damage_calc.damage_calc_random_mult_pct;
 
@@ -574,6 +591,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
         .field("damageCalcBase", &js::CalcDetails::damage_calc_base)
         .field("staticDamageMult", &js::CalcDetails::static_damage_mult)
         .field("damageCalc", &js::CalcDetails::damage_calc)
+        .field("avgRandomDamageMultPct", &js::CalcDetails::avg_random_damage_mult_pct)
         .field("minRandomDamageMultPct", &js::CalcDetails::min_random_damage_mult_pct)
         .field("maxRandomDamageMultPct", &js::CalcDetails::max_random_damage_mult_pct)
         .field("modifiers", &js::CalcDetails::modifiers);
@@ -589,6 +607,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
         .field("noDamage", &js::ResultDetails::no_damage)
         .field("calc", &js::ResultDetails::calc);
     value_object<js::CalcDamageResult>("CalcDamageResult")
+        .field("avgDamage", &js::CalcDamageResult::avg_damage)
         .field("minDamage", &js::CalcDamageResult::min_damage)
         .field("maxDamage", &js::CalcDamageResult::max_damage)
         .field("healed", &js::CalcDamageResult::healed)
