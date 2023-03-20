@@ -388,26 +388,22 @@
         <template id="monster-form">
             <species-input name="species" id="monster-form-species-input"></species-input>
             <species-output for="monster-form-species-input"></species-output>
-            <controlled-select-list-input class="override-types-input">Override types<popup-info slot="details"> Override the Pokémon's normal types. This might happen with, e.g., Conversion.</popup-info>
-                <div slot="items">
+            <controlled-select-list-input class="override-types-input">Override types<popup-info slot="details"> Override the Pokémon's normal types. This might happen with, e.g., Conversion.</popup-info><div slot="items">
                     <div>
                         <select-input name="type1">Type 1</select-input>
                     </div>
                     <div>
                         <select-input name="type2">Type 2</select-input>
                     </div>
-                </div>
-            </controlled-select-list-input>
-            <controlled-select-list-input class="override-abilities-input">Override abilities<popup-info slot="details"> Override the Pokémon's normal abilities. This might happen with, e.g., Skill Swap.</popup-info>
-                <div slot="items">
+                </div></controlled-select-list-input>
+            <controlled-select-list-input class="override-abilities-input">Override abilities<popup-info slot="details"> Override the Pokémon's normal abilities. This might happen with, e.g., Skill Swap.</popup-info><div slot="items">
                     <div>
                         <select-input name="ability1">Ability 1<popup-info slot="details"> Any ability not listed here is either functionally equivalent to Unknown for the purposes of damage calculation, or is unsupported</popup-info></select-input>
                     </div>
                     <div>
                         <select-input name="ability2">Ability 2<popup-info slot="details"> Any ability not listed here is either functionally equivalent to Unknown for the purposes of damage calculation, or is unsupported</popup-info></select-input>
                     </div>
-                </div>
-            </controlled-select-list-input>
+                </div></controlled-select-list-input>
             <div>
                 <checkbox-input name="is_team_member">Team member<popup-info slot="details" width="250"> Team members are treated differently than enemies in some ways. For example, only team members can benefit from exclusive item effects, and damage dealt by enemies is reduced by a factor of 85/64.</popup-info></checkbox-input>
             </div>
