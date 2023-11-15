@@ -1988,7 +1988,8 @@ const data_files::MoveData mechanics::data_files::MOVES[559] = {
      "Status move"},
 };
 
-// Data from /BALANCE/monster.md
+// Data from /BALANCE/monster.md, with the following exceptions:
+// - The Castform forms are all Normal types in monster.md, but are adjusted here.
 const data_files::MonsterData mechanics::data_files::MONSTERS[1155] = {
     {eos::MONSTER_NONE, eos::GENDER_INVALID, eos::TYPE_NORMAL, eos::TYPE_NONE,
      eos::ABILITY_OVERGROW, eos::ABILITY_UNKNOWN, 256, 99},
@@ -2750,11 +2751,12 @@ const data_files::MonsterData mechanics::data_files::MONSTERS[1155] = {
      eos::ABILITY_MARVEL_SCALE, eos::ABILITY_UNKNOWN, 332, 119},
     {eos::MONSTER_CASTFORM_NORMAL, eos::GENDER_MALE, eos::TYPE_NORMAL, eos::TYPE_NONE,
      eos::ABILITY_FORECAST, eos::ABILITY_UNKNOWN, 153, 12},
-    {eos::MONSTER_CASTFORM_SNOWY, eos::GENDER_MALE, eos::TYPE_NORMAL, eos::TYPE_NONE,
+    // NOTE: The Castform forms are all Normal type in monster.md, but are corrected here
+    {eos::MONSTER_CASTFORM_SNOWY, eos::GENDER_MALE, eos::TYPE_ICE, eos::TYPE_NONE,
      eos::ABILITY_FORECAST, eos::ABILITY_UNKNOWN, 153, 30},
-    {eos::MONSTER_CASTFORM_SUNNY, eos::GENDER_MALE, eos::TYPE_NORMAL, eos::TYPE_NONE,
+    {eos::MONSTER_CASTFORM_SUNNY, eos::GENDER_MALE, eos::TYPE_FIRE, eos::TYPE_NONE,
      eos::ABILITY_FORECAST, eos::ABILITY_UNKNOWN, 153, 29},
-    {eos::MONSTER_CASTFORM_RAINY, eos::GENDER_MALE, eos::TYPE_NORMAL, eos::TYPE_NONE,
+    {eos::MONSTER_CASTFORM_RAINY, eos::GENDER_MALE, eos::TYPE_WATER, eos::TYPE_NONE,
      eos::ABILITY_FORECAST, eos::ABILITY_UNKNOWN, 153, 24},
     {eos::MONSTER_KECLEON, eos::GENDER_MALE, eos::TYPE_NORMAL, eos::TYPE_NONE,
      eos::ABILITY_COLOR_CHANGE, eos::ABILITY_UNKNOWN, 179, 31},
