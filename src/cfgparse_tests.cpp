@@ -18,7 +18,7 @@ TEST_CASE("Doubles can be parsed as Fx32") {
     REQUIRE_THROWS(json_get_fx32({{"fx32", 1e7}}, "fx32"));
 }
 
-DungeonState parse_dungeon_cfg(const json&, const json&);
+DungeonState parse_dungeon_cfg(const json&, const json&, const json&);
 TEST_CASE("Dungeon object is parsed correctly") {
     auto dungeon = parse_dungeon_cfg(
         {
@@ -47,6 +47,9 @@ TEST_CASE("Dungeon object is parsed correctly") {
         {
             {"huge_pure_power", true},
             {"critical_hit", true},
+        },
+        {
+            {"version", "EU"},
         });
 
     REQUIRE(dungeon.weather == eos::WEATHER_SUNNY);
@@ -65,6 +68,7 @@ TEST_CASE("Dungeon object is parsed correctly") {
     REQUIRE(dungeon.other_monsters.abilities[eos::ABILITY_MOLD_BREAKER]);
     REQUIRE(dungeon.rng.huge_pure_power);
     REQUIRE(dungeon.rng.critical_hit);
+    REQUIRE(dungeon.version == versions::EU);
 }
 
 MonsterEntity parse_monster_cfg(const json&);
@@ -232,6 +236,7 @@ TEST_CASE("Top-level config is parsed correctly") {
         {"defender", {{"species", "bulbasaur"}}},
         {"dungeon", {{"mud_sport", true}}},
         {"rng", {{"critical_hit", true}}},
+        {"misc", {{"version", "EU"}}},
     });
 
     CHECK(move.id == eos::MOVE_TACKLE);
@@ -239,5 +244,6 @@ TEST_CASE("Top-level config is parsed correctly") {
     CHECK(defender.monster.apparent_id == eos::MONSTER_BULBASAUR);
     CHECK(dungeon.mud_sport_turns > 0);
     CHECK(dungeon.rng.critical_hit);
+    CHECK(dungeon.version == versions::EU);
     CHECK(power == mechanics::get_move_base_power(eos::MOVE_TACKLE));
 }

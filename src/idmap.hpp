@@ -11,6 +11,7 @@
 #include <unordered_set>
 #include <vector>
 #include "pmdsky.hpp"
+#include "versions.hpp"
 
 namespace ids {
 template <typename T> class IDMap {
@@ -127,6 +128,7 @@ template <typename T> class IDMap {
     }
 };
 
+extern const IDMap<versions::eos_version> VERSION;
 extern const IDMap<eos::move_id> MOVE;
 extern const IDMap<eos::monster_id> MONSTER;
 extern const IDMap<eos::type_id> TYPE;

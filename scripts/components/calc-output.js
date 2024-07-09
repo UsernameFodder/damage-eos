@@ -29,8 +29,8 @@ class CalcOutput extends HTMLElement {
             this.render();
         }
     }
-    registerInputs(move, attacker, defender, dungeon, rng) {
-        for (const input of [move, attacker, defender, dungeon, rng]) {
+    registerInputs(move, attacker, defender, dungeon, rng, misc) {
+        for (const input of [move, attacker, defender, dungeon, rng, misc]) {
             input.registerCallback(this.setState);
         }
         this.monster1 = attacker;

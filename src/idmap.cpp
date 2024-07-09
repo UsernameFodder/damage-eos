@@ -2,6 +2,12 @@
 
 using namespace ids;
 
+const IDMap<versions::eos_version> ids::VERSION = {
+    {versions::NA, "NA", {"US"}},
+    {versions::EU, "EU", {}},
+    {versions::JP, "JP", {}},
+};
+
 const IDMap<eos::move_id> ids::MOVE = {
     {eos::MOVE_NOTHING, "Nothing"},
     {eos::MOVE_IRON_TAIL, "Iron Tail"},

@@ -23,7 +23,7 @@ Fx32 json_get_fx32(const json& obj, const std::string name, double default_val =
     return Fx32{ipart, fpart};
 }
 
-DungeonState parse_dungeon_cfg(const json& dungeon_obj, const json& rng_obj) {
+DungeonState parse_dungeon_cfg(const json& dungeon_obj, const json& rng_obj, const json& misc_obj) {
     DungeonState dungeon = {};
 
     if (dungeon_obj.contains("weather")) {
@@ -54,6 +54,10 @@ DungeonState parse_dungeon_cfg(const json& dungeon_obj, const json& rng_obj) {
 
     dungeon.rng.huge_pure_power = rng_obj.value("huge_pure_power", false);
     dungeon.rng.critical_hit = rng_obj.value("critical_hit", false);
+
+    if (misc_obj.contains("version")) {
+        dungeon.version = ids::VERSION[misc_obj.at("version").get<std::string>()];
+    }
 
     return dungeon;
 }
@@ -302,8 +306,8 @@ std::pair<Move, int32_t> parse_move_cfg(const json& move_obj) {
 }
 
 std::tuple<DungeonState, MonsterEntity, MonsterEntity, Move, int32_t> parse_cfg(const json& cfg) {
-    DungeonState dungeon =
-        parse_dungeon_cfg(cfg.value("dungeon", json({})), cfg.value("rng", json({})));
+    DungeonState dungeon = parse_dungeon_cfg(
+        cfg.value("dungeon", json({})), cfg.value("rng", json({})), cfg.value("misc", json({})));
     MonsterEntity attacker = parse_monster_cfg(cfg.at("attacker"));
     MonsterEntity defender = parse_monster_cfg(cfg.at("defender"));
     auto [move, power] = parse_move_cfg(cfg.at("move"));

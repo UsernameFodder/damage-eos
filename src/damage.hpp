@@ -10,6 +10,7 @@
 #include "mathutil.hpp"
 #include "mechanics.hpp"
 #include "pmdsky.hpp"
+#include "versions.hpp"
 
 using std::int16_t;
 using std::int32_t;
@@ -284,6 +285,8 @@ struct DungeonState {
     // The actual code looks up this information by scanning the entity tables and dungeon tiles,
     // but that's out of scope, so this is a more convenient way to encapsulate the necessary info
     MockOtherMonsters other_monsters = {};
+    // Not actually in-game. Only needed to support version differencees
+    versions::eos_version version = versions::NA;
 };
 
 // Based on eos::move

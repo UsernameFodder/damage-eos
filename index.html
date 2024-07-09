@@ -546,6 +546,12 @@
             <checkbox-list-input name="other_monsters.abilities">Abilities (other Pokémon)<popup-info slot="details"> Special abilities that affect other Pokémon on the floor</popup-info></checkbox-list-input>
         </template>
 
+        <template id="misc-form">
+            <div>
+                <select-input name="version">Game version<popup-info slot="details"> Damage calculation varies slightly between game versions. For example, the Japanese version has bugs that were fixed in later versions.</popup-info></select-input>
+            </div>
+        </template>
+
         <h1>PMD Explorers of Sky Damage Calculator</h1>
         <noscript>This web application requires JavaScript to run.</noscript>
         <div id="grid-wrapper">
@@ -576,6 +582,10 @@
                 <section id="dungeon-section" class="environment-subsection">
                     <h2>Dungeon</h2>
                     <dungeon-form id="dungeon-ui" class="widget" name="dungeon"></dungeon-form>
+                </section>
+                <section id="misc-section" class="environment-subsection">
+                    <h2>Misc.</h2>
+                    <misc-form id="misc-ui" class="widget" name="misc"></misc-form>
                 </section>
             </div>
             <section id="monster2-section" class="cell bottom-row monster-box" name="defender">

@@ -3,15 +3,17 @@ import "./components/dungeon-form.js"
 import "./components/monster-form.js"
 import "./components/move-form.js"
 import "./components/rng-form.js"
+import "./components/misc-form.js"
 
 const moveForm = document.getElementById("move-ui");
 const monster1Form = document.getElementById("monster1-ui");
 const monster2Form = document.getElementById("monster2-ui");
 const dungeonForm = document.getElementById("dungeon-ui");
 const rngForm = document.getElementById("rng-ui");
+const miscForm = document.getElementById("misc-ui");
 const calcOutput = document.getElementById("calc-results");
 
-calcOutput.registerInputs(moveForm, monster1Form, monster2Form, dungeonForm, rngForm);
+calcOutput.registerInputs(moveForm, monster1Form, monster2Form, dungeonForm, rngForm, miscForm);
 
 const swapMonstersButton = document.getElementById("swap-monsters-toggle");
 swapMonstersButton.onclick = () => {

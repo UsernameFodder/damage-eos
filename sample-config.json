@@ -137,5 +137,8 @@
     "rng": {
         "huge_pure_power": false,
         "critical_hit": false
+    },
+    "misc": {
+        "version": "NA"
     }
 }

@@ -659,9 +659,12 @@ void calc_damage(DungeonState& dungeon, const MonsterEntity& attacker, MonsterEn
     if (defender.monster.apparent_id == eos::MONSTER_DEOXYS_SPEED) {
         def_stage -= 2;
     }
-    if (defender.monster.apparent_id == eos::MONSTER_GIRATINA_ALTERED) {
+    // The JP version has a bug where the attacker's identity is checked instead of the defender for
+    // the defensive stage modifier
+    const auto& entity_check_giratina = (dungeon.version == versions::JP) ? attacker : defender;
+    if (entity_check_giratina.monster.apparent_id == eos::MONSTER_GIRATINA_ALTERED) {
         def_stage += 2;
-    } else if (defender.monster.apparent_id == eos::MONSTER_GIRATINA_ORIGIN) {
+    } else if (entity_check_giratina.monster.apparent_id == eos::MONSTER_GIRATINA_ORIGIN) {
         def_stage -= 2;
     }
     def_stage += defender.monster.stat_modifiers.defensive_stages[move_category];

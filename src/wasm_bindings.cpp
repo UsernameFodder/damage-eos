@@ -41,6 +41,8 @@ using namespace emscripten;
 namespace js {
 using nlohmann::json;
 
+std::vector<std::string> get_versions() { return ids::VERSION.all_except(); }
+
 std::vector<std::string> get_moves() {
     auto all_moves = ids::MOVE.all_except();
     // Insert the special projectile item moves; see cfgparse.cpp
@@ -616,6 +618,7 @@ EMSCRIPTEN_BINDINGS(damagecalc) {
         .field("critChance", &js::CalcDamageResult::crit_chance)
         .field("details", &js::CalcDamageResult::details);
 
+    function("getVersions", &js::get_versions);
     function("getMoves", &js::get_moves);
     function("getProjectileMoves", &js::get_projectile_moves);
     function("getSpecies", &js::get_species);

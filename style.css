@@ -24,7 +24,7 @@ h1, h2 {
 #grid-wrapper {
     display: grid;
     grid-template-columns: 3fr 2fr 3fr;
-    grid-template-rows: 44ex 99ex;
+    grid-template-rows: 44ex 105ex;
     min-width: 77em;
     max-width: 82em;
 }
